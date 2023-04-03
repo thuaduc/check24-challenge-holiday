@@ -2,5 +2,5 @@
 
 # How to start
 
-docker build -t your-docker-username/your-project-name:latest .
+docker build -t thuaduc24042001/holiday .  
 docker run -d
