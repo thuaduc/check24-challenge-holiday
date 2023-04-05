@@ -3,11 +3,12 @@ package com.company.holidaybackend.Service;
 import com.company.holidaybackend.Model.Hotel;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface HotelService {
-    public String addHotel(Hotel hotel);
-    public List<Hotel> getHotel();
+    List<Hotel> getAllHotel();
 
-    public String deleteHotel(int id);
+    Optional<Hotel> getHotelById(int id);
+
 }

@@ -6,33 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HotelServiceImpl implements HotelService{
 
+    private final HotelRepository hotelRepository;
+
     @Autowired
-    private HotelRepository hotelRepository;
-
-    @Override
-    public String addHotel(Hotel hotel) {
-        /*if (hotelRepository.existsById(hotel.getId())){
-            return "Can not create, hotel existed";
-        } else {
-            hotelRepository.save(hotel);
-            return "Hotel added successfully";
-        }*/
-        hotelRepository.save(hotel);
-        return hotel + " added";
+    public HotelServiceImpl(HotelRepository hotelRepository) {
+        this.hotelRepository = hotelRepository;
     }
-
     @Override
-    public List<Hotel> getHotel() {
+    public List<Hotel> getAllHotel() {
         return hotelRepository.findAll();
     }
 
     @Override
-    public String deleteHotel(int id) {
-        hotelRepository.deleteById(id);
-        return "Deleted";
+    public Optional<Hotel> getHotelById(int id) {
+        return this.hotelRepository.findById(id);
     }
 }

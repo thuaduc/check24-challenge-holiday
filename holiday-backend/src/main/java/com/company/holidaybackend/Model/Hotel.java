@@ -1,27 +1,25 @@
 package com.company.holidaybackend.Model;
 
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.*;
+import jakarta.persistence.*;
 
-import static java.lang.Double.parseDouble;
 
 @Entity
+@Table
 public class Hotel {
 
     @Id
+    @Nonnull
     private int id;
 
     private String name;
 
-    private double stars;
+    private short stars;
 
-    public Hotel(Integer id, String name, Double stars) {
-        this.id = id.intValue();
+    public Hotel(int id, String name, short stars) {
+        this.id = id;
         this.name = name;
-        this.stars = stars.doubleValue();
+        this.stars = stars;
     }
 
     public Hotel() {
@@ -43,11 +41,11 @@ public class Hotel {
         this.name = name;
     }
 
-    public double getStars() {
+    public short getStars() {
         return stars;
     }
 
-    public void setStars(double stars) {
+    public void setStars(short stars) {
         this.stars = stars;
     }
 
