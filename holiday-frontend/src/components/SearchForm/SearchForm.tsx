@@ -1,23 +1,23 @@
+import "./SearchForm.css";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Mallorca from "../../../public/mallorca.jpeg";
+import mallorca from "../../../public/mallorca.png";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import DatePicker from "@mui/lab/DatePicker";
-import Typography from "@mui/material/Typography";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ThemeProvider } from "@emotion/react";
+import { CustonTheme } from "../Theme";
 import dayjs, { Dayjs } from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const styles = {
   backgroundLandscape: {
-    backgroundImage: `url(${Mallorca})`,
+    backgroundImage: `url(${mallorca})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    height: "50vh",
+    height: "40vh",
     width: "100%",
   },
 
@@ -47,125 +47,103 @@ export function SearchForm() {
   ) => {
     setDepartureAirport(e.target.value);
   };
-
-  const handleCountAdults = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (value == null) {
-    } else if (value >= 1) {
-      setCountAdults(value);
-    } else {
-      setCountAdults(1);
-    }
-  };
-
-  const handleCountChildren = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (value >= 1) {
-      setCountChildren(value);
-    } else {
-      setCountChildren(1);
-    }
-  };
-
-  const handleDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (value >= 1) {
-      setDuration(value);
-    } else {
-      setDuration(1);
-    }
-  };
-
   const handleSearch = () => {};
 
   return (
     <>
-      <Box
-        sx={{
-          ...styles.backgroundLandscape,
-          display: "flex",
-          flex: 1,
-          minHeight: "100%",
-        }}
-      ></Box>
-      <Box sx={{ flex: 1 }}>{}</Box>
-      <Box>
-        <Container maxWidth="md" sx={{ ...styles.backgroundWhite, mt: -10 }}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={4}>
-              <TextField
-                select
-                fullWidth
-                label="Departure Airport"
-                value={departureAirport}
-                onChange={handleDepartureAirportChange}
-              >
-                {departureAirports.map((airport) => (
-                  <MenuItem key={airport.value} value={airport.value}>
-                    {airport.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+      <ThemeProvider theme={CustonTheme}>
+        <Box
+          sx={{
+            ...styles.backgroundLandscape,
+            minHeight: "100%",
+          }}
+        >
+          <Container>
+            <div className="container">
+              <div className="first">
+                <p className="style">Explore</p>
+              </div>
+              <div className="second">
+                <p className="style">Mallorca</p>
+              </div>
+            </div>
+          </Container>
+        </Box>
+        <Box sx={{ flex: 1 }}>{}</Box>
+        <Box>
+          <Container maxWidth="md" sx={{ ...styles.backgroundWhite, mt: -10 }}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Departure Airport"
+                  value={departureAirport}
+                  onChange={handleDepartureAirportChange}
+                >
+                  {departureAirports.map((airport) => (
+                    <MenuItem key={airport.value} value={airport.value}>
+                      {airport.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <DatePicker
+                  sx={{ width: "100%" }}
+                  value={departureDate}
+                  onChange={setDepartureDate}
+                  label="Departure Date"
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <DatePicker
+                  sx={{ width: "100%" }}
+                  value={returnDate}
+                  onChange={setReturnDate}
+                  label="Departure Date"
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Adults"
+                  value={countAdults}
+                  onChange={(e) => setCountAdults}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Children"
+                  value={countChildren}
+                  onChange={(e) => setCountChildren}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Duration (days)"
+                  value={duration}
+                  onChange={(e) => setDuration}
+                />
+              </Grid>
+              <Grid item xs={12} sx={{}}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSearch}
+                >
+                  Search
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <DatePicker
-                fullWidth
-                sx={{ width: "100%" }}
-                value={departureDate}
-                onChange={setDepartureDate}
-                label="Departure Date"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <DatePicker
-                fullWidth
-                sx={{ width: "100%" }}
-                value={departureDate}
-                onChange={setDepartureDate}
-                label="Departure Date"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Adults"
-                value={countAdults}
-                onChange={handleCountAdults}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Children"
-                value={countChildren}
-                onChange={(e) => {
-                  handleCountChildren;
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Duration (days)"
-                value={duration}
-                onChange={handleDuration}
-              />
-            </Grid>
-            <Grid item xs={12} sx={{}}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+          </Container>
+        </Box>
+      </ThemeProvider>
     </>
   );
 }

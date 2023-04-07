@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.style {
+  font-style: light;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 115px;
+  text-align: center;
+  text-transform: uppercase;
+  justify-content: space-around;
+  letter-spacing: 40px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.first {
+  margin-top: -15px;
+}
+
+.second {
+  margin-top: 30px;
+}
