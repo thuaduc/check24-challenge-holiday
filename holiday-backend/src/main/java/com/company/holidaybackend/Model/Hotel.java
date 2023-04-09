@@ -16,9 +16,9 @@ public class Hotel {
 
     private String name;
 
-    private short stars;
+    private int stars;
 
-    public Hotel(int id, String name, short stars) {
+    public Hotel(int id, String name, int stars) {
         this.id = id;
         this.name = name;
         this.stars = stars;

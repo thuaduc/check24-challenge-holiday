@@ -27,12 +27,14 @@ public class Offer {
     private long duration;
 
     private String inboundDepartureAirport;
+    private OffsetDateTime inboundDepartureDatetime;
+
     private String inboundArrivalAirport;
     private OffsetDateTime inboundArrivalDatetime;
 
-    private OffsetDateTime inboundDepartureDatetime;
-    private OffsetDateTime outboundDepartureDatetime;
     private String outboundDepartureAirport;
+    private OffsetDateTime outboundDepartureDatetime;
+
     private String outboundArrivalAirport;
     private OffsetDateTime outboundArrivalDatetime;
 
@@ -40,11 +42,12 @@ public class Offer {
     private boolean oceanView;
     private String roomType;
 
-    public Offer(int hotelId, String outboundDepartureDatetime, String inboundDepartureDatetime,
-                 int countAdults, int countChildren, double price, String inboundDepartureAirport,
-                 String inboundArrivalAirport, String inboundArrivalDatetime,
-                 String outboundDepartureAirport, String outboundArrivalAirport,
-                 String outboundArrivalDatetime, String mealType, boolean oceanView, String roomType) {
+    public Offer(int hotelId, int countAdults, int countChildren, double price,
+                 String inboundDepartureAirport, String inboundDepartureDatetime,
+                 String inboundArrivalDatetime,
+                 String outboundDepartureDatetime,
+                 String outboundArrivalAirport, String outboundArrivalDatetime,
+                 String mealType, boolean oceanView, String roomType) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -56,9 +59,9 @@ public class Offer {
         this.price = price;
         this.duration = Duration.between(this.inboundArrivalDatetime, this.outboundDepartureDatetime).toDays();
         this.inboundDepartureAirport = inboundDepartureAirport;
-        this.inboundArrivalAirport = inboundArrivalAirport;
+        this.inboundArrivalAirport = "PMI";
         this.inboundArrivalDatetime = OffsetDateTime.parse(inboundArrivalDatetime, formatter);
-        this.outboundDepartureAirport = outboundDepartureAirport;
+        this.outboundDepartureAirport = "PMI";
         this.outboundArrivalAirport = outboundArrivalAirport;
         this.outboundArrivalDatetime = OffsetDateTime.parse(outboundArrivalDatetime, formatter);
         this.mealType = mealType;
