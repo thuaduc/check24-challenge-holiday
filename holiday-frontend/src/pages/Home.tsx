@@ -1,3 +1,9 @@
+import { SearchForm } from "../components/SearchForm/SearchForm";
+
 export default function Home() {
-  return <h1>Home</h1>;
+  return (
+    <>
+      <SearchForm />
+    </>
+  );
 }

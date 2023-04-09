@@ -14,7 +14,6 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <NavBar />
-      <SearchForm />
       <Container sx={{ m: 2, p: 2 }}>
         <Routes>
           <Route path="/" element={<Home />}></Route>

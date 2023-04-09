@@ -1,15 +1,17 @@
 package com.company.holidaybackend.Model;
 
-import jakarta.annotation.*;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table
+@Getter @Setter @NoArgsConstructor
 public class Hotel {
 
     @Id
-    @Nonnull
     private int id;
 
     private String name;
@@ -19,33 +21,6 @@ public class Hotel {
     public Hotel(int id, String name, short stars) {
         this.id = id;
         this.name = name;
-        this.stars = stars;
-    }
-
-    public Hotel() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public short getStars() {
-        return stars;
-    }
-
-    public void setStars(short stars) {
         this.stars = stars;
     }
 

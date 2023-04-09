@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/hotel")
 @CrossOrigin
 public class HotelController {
 
@@ -23,17 +23,16 @@ public class HotelController {
     @GetMapping("/hotel")
     public String getHotel(){
         List<Hotel> hotels = hotelService.getAllHotel();
-        StringBuffer result = new StringBuffer();
-        for (int i = 0; i < hotels.size(); i++){
-            result.append(hotels.get(i).toString() + "\n");
+        StringBuilder result = new StringBuilder();
+        for (Hotel hotel : hotels) {
+            result.append(hotel.toString()).append("\n");
         }
         return result.toString();
     }
 
     @GetMapping("/hotel/{id}")
     public Optional<Hotel> getHotelById(@PathVariable("id") int id){
-        Optional<Hotel> result = hotelService.getHotelById(id);
-        return result;
+        return hotelService.getHotelById(id);
     }
 
 
