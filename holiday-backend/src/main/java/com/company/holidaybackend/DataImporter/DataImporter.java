@@ -1,5 +1,6 @@
 package com.company.holidaybackend.DataImporter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -10,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 
-import com.company.holidaybackend.Repository.HotelRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +25,12 @@ public class DataImporter {
 
     private final ResourceLoader resourceLoader;
     private final JdbcTemplate jdbcTemplate;
+    private final long lastModifiedTime_hotels = 0L;
+    private final long lastModifiedTime_offers = 0L;
+    @Value("${hotels.file.path}")
+    private String hotelsFilePath;
+    @Value("${offers.file.path}")
+    private String offersFilePath;
 
     @Autowired
     public DataImporter(ResourceLoader resourceLoader, JdbcTemplate jdbcTemplate) {
@@ -33,6 +40,12 @@ public class DataImporter {
 
     @PostConstruct
     public void importHotels() throws IOException {
+        /*File hotelsFile = new File(hotelsFilePath);
+        if (hotelsFile.lastModified() == lastModifiedTime_hotels) {
+            // File has not been modified since last run, no need to import
+            return;
+        }*/
+
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/hotels.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -44,8 +57,8 @@ public class DataImporter {
         for (CSVRecord record : records) {
             int id = Integer.parseInt(record.get("id"));
             String name = record.get("name");
-            int stars = Integer.parseInt("" + record.get("stars").charAt(0));
-            batchArgs.add(new Object[] {id, name, stars});
+            int stars = Integer.parseInt(String.valueOf(record.get("stars").charAt(0)));
+            batchArgs.add(new Object[]{id, name, stars});
         }
         jdbcTemplate.batchUpdate("INSERT INTO hotel (id, name, stars) VALUES (?, ?, ?)", batchArgs);
         long endTime = System.nanoTime();
@@ -55,6 +68,12 @@ public class DataImporter {
 
     @PostConstruct
     public void importOffers() throws IOException {
+        /*File offersFile = new File(offersFilePath);
+        if (offersFile.lastModified() == lastModifiedTime_offers) {
+            // File has not been modified since last run, no need to import
+            return;
+        }*/
+
         long startTime = System.nanoTime();
 
         Resource resource = resourceLoader.getResource("classpath:data/offers.csv");
@@ -91,7 +110,7 @@ public class DataImporter {
             boolean oceanView = Boolean.parseBoolean(record.get("oceanview"));
             String roomType = record.get("roomtype");
 
-            batchArgs.add(new Object[]{id, countAdults, countChildren,price, duration,
+            batchArgs.add(new Object[]{id, countAdults, countChildren, price, duration,
                     inboundDepartureAirport, inboundDepartureDatetime,
                     "FMI", inboundArrivalDatetime,
                     "FMI", outboundDepartureDatetime,
@@ -100,13 +119,13 @@ public class DataImporter {
 
         }
         jdbcTemplate.batchUpdate("INSERT INTO offer (" +
-                        "hotel_id, count_adults, count_children, price, duration, " +
-                        "inbound_departure_airport, inbound_departure_datetime," +
-                        "inbound_arrival_airport, inbound_arrival_datetime," +
-                        "outbound_departure_airport, outbound_departure_datetime," +
-                        "outbound_arrival_airport, outbound_arrival_datetime," +
-                        "meal_type, ocean_view, room_type" +
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
+                "hotel_id, count_adults, count_children, price, duration, " +
+                "inbound_departure_airport, inbound_departure_datetime," +
+                "inbound_arrival_airport, inbound_arrival_datetime," +
+                "outbound_departure_airport, outbound_departure_datetime," +
+                "outbound_arrival_airport, outbound_arrival_datetime," +
+                "meal_type, ocean_view, room_type" +
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
 
         long endTime = System.nanoTime();
         double durationSeconds = (endTime - startTime) / 1_000_000_000.0;

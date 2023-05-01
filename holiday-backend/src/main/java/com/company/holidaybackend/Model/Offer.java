@@ -68,5 +68,4 @@ public class Offer {
         this.oceanView = oceanView;
         this.roomType = roomType;
     }
-
 }

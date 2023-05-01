@@ -13,8 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/api/v1/offer")
-@CrossOrigin
+@RequestMapping("/api/v1")
 public class OfferController {
     private final OfferService offerService;
 
@@ -23,21 +22,20 @@ public class OfferController {
         this.offerService = offerService;
     }
 
-    @PostMapping("/offer")
-    public String addOffer(@RequestBody Offer offer){
-        offerService.saveOffer(offer);
-        return "Offer added successfully!";
-    }
-
     @GetMapping("/offer")
-    public List<Offer> search(@RequestParam(value = "search") String search) {
+    public List<Offer> query(@RequestParam(value = "search") String search) {
         OfferSpecificationBuilder builder = new OfferSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(search + ",");
+        Matcher matcher = pattern.matcher(search + "&");
         while (matcher.find()) {
             builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
         }
         Specification<Offer> spec = builder.build();
         return offerService.findOffer(spec);
+    }
+
+    @GetMapping
+    public String welcome() {
+        return "Welcome to holiday api";
     }
 }

@@ -7,11 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public interface OfferService {
-    String saveOffer(Offer offer);
-
-    List<Offer> getAllOffer();
-
     List<Offer> findOffer(Specification<Offer> spec);
 
-    List<Offer> findAll();
 }

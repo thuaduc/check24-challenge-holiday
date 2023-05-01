@@ -20,22 +20,8 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public String saveOffer(Offer offer) {
-        offerRepository.save(offer);
-        return "Offer saved successfully!";
-    }
-
-    @Override
-    public List<Offer> getAllOffer() {
-        return offerRepository.findAll();
-    }
-
-    @Override
-    public List<Offer> findOffer(Specification<Offer> spec){
+    public List<Offer> findOffer(Specification<Offer> spec) {
         return offerRepository.findAll(spec);
     }
 
-    @Override public List<Offer> findAll(){
-        return offerRepository.findAll();
-    }
 }

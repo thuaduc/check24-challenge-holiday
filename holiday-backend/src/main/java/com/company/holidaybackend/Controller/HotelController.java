@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/hotel")
-@CrossOrigin
+@RequestMapping("/api/v1")
 public class HotelController {
 
     private final HotelService hotelService;
@@ -21,7 +20,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotel")
-    public String getHotel(){
+    public String getHotel() {
         List<Hotel> hotels = hotelService.getAllHotel();
         StringBuilder result = new StringBuilder();
         for (Hotel hotel : hotels) {
@@ -31,7 +30,7 @@ public class HotelController {
     }
 
     @GetMapping("/hotel/{id}")
-    public Optional<Hotel> getHotelById(@PathVariable("id") int id){
+    public Optional<Hotel> getHotelById(@PathVariable("id") int id) {
         return hotelService.getHotelById(id);
     }
 

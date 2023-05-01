@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class SpecSearchCriteria {
 
     private String key;
@@ -22,6 +24,4 @@ public class SpecSearchCriteria {
         this.value = value;
         //this.orPredicate = orPredicate != null && orPredicate.equals(SearchOperation.OR_PREDICATE_FLAG);
     }
-
-
 }
