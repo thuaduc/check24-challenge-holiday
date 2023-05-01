@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Offer {
 
     @Id
@@ -27,45 +30,55 @@ public class Offer {
     private long duration;
 
     private String inboundDepartureAirport;
-    private OffsetDateTime inboundDepartureDatetime;
+
+    private java.sql.Timestamp inboundDepartureDatetime;
 
     private String inboundArrivalAirport;
-    private OffsetDateTime inboundArrivalDatetime;
+
+    private java.sql.Timestamp inboundArrivalDatetime;
 
     private String outboundDepartureAirport;
-    private OffsetDateTime outboundDepartureDatetime;
+
+    private java.sql.Timestamp outboundDepartureDatetime;
 
     private String outboundArrivalAirport;
-    private OffsetDateTime outboundArrivalDatetime;
+
+    private java.sql.Timestamp outboundArrivalDatetime;
 
     private String mealType;
     private boolean oceanView;
     private String roomType;
 
     public Offer(int hotelId, int countAdults, int countChildren, double price,
-                 String inboundDepartureAirport, String inboundDepartureDatetime,
+                 String inboundDepartureDatetime,
                  String inboundArrivalDatetime,
+                 String outboundDepartureAirport,
                  String outboundDepartureDatetime,
                  String outboundArrivalAirport, String outboundArrivalDatetime,
                  String mealType, boolean oceanView, String roomType) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
         this.hotelId = hotelId;
-        this.outboundDepartureDatetime = OffsetDateTime.parse(outboundDepartureDatetime, formatter);
-        this.inboundDepartureDatetime = OffsetDateTime.parse(inboundDepartureDatetime, formatter);
+        this.outboundDepartureDatetime = timestamp_converter(outboundDepartureDatetime);
+        this.inboundDepartureDatetime = timestamp_converter(inboundDepartureDatetime);
         this.countAdults = countAdults;
         this.countChildren = countChildren;
         this.price = price;
-        this.duration = Duration.between(this.inboundArrivalDatetime, this.outboundDepartureDatetime).toDays();
-        this.inboundDepartureAirport = inboundDepartureAirport;
+        long milliseconds = this.outboundArrivalDatetime.getTime() - this.inboundDepartureDatetime.getTime();
+        this.duration = (int) milliseconds / (24 * 60 * 60 * 1000);
         this.inboundArrivalAirport = "PMI";
-        this.inboundArrivalDatetime = OffsetDateTime.parse(inboundArrivalDatetime, formatter);
         this.outboundDepartureAirport = "PMI";
+        this.inboundArrivalDatetime = timestamp_converter(inboundArrivalDatetime);
+        this.outboundArrivalDatetime = timestamp_converter(outboundArrivalDatetime);
         this.outboundArrivalAirport = outboundArrivalAirport;
-        this.outboundArrivalDatetime = OffsetDateTime.parse(outboundArrivalDatetime, formatter);
         this.mealType = mealType;
         this.oceanView = oceanView;
         this.roomType = roomType;
+    }
+
+    private java.sql.Timestamp timestamp_converter(String timestamp) {
+        LocalDateTime localDateTime = LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneOffset.UTC);
+        return java.sql.Timestamp.from(zonedDateTime.toInstant());
     }
 }

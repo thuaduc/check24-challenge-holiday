@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -26,8 +27,10 @@ public class DataImporter {
     private final JdbcTemplate jdbcTemplate;
     private final long lastModifiedTime_hotels = 0L;
     private final long lastModifiedTime_offers = 0L;
+
     @Value("${hotels.file.path}")
     private String hotelsFilePath;
+
     @Value("${offers.file.path}")
     private String offersFilePath;
 
@@ -39,11 +42,11 @@ public class DataImporter {
 
     @PostConstruct
     public void importHotels() throws IOException {
-        /*File hotelsFile = new File(hotelsFilePath);
+        File hotelsFile = new File(hotelsFilePath);
         if (hotelsFile.lastModified() == lastModifiedTime_hotels) {
             // File has not been modified since last run, no need to import
             return;
-        }*/
+        }
 
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/hotels.csv");
@@ -67,11 +70,11 @@ public class DataImporter {
 
     @PostConstruct
     public void importOffers() throws IOException {
-        /*File offersFile = new File(offersFilePath);
+        File offersFile = new File(offersFilePath);
         if (offersFile.lastModified() == lastModifiedTime_offers) {
             // File has not been modified since last run, no need to import
             return;
-        }*/
+        }
 
         long startTime = System.nanoTime();
 
@@ -91,7 +94,9 @@ public class DataImporter {
             int id = Integer.parseInt(record.get("\uFEFFhotelid"));
 
             int countAdults = Integer.parseInt(record.get("countadults"));
+
             int countChildren = Integer.parseInt(record.get("countchildren"));
+
             double price = Double.parseDouble(record.get("price"));
 
             String inboundDepartureAirport = record.get("inbounddepartureairport");
@@ -117,6 +122,7 @@ public class DataImporter {
                     mealType, oceanView, roomType});
 
         }
+
         jdbcTemplate.batchUpdate("INSERT INTO offer (" +
                 "hotel_id, count_adults, count_children, price, duration, " +
                 "inbound_departure_airport, inbound_departure_datetime," +

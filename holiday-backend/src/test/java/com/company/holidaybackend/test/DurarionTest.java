@@ -1,7 +1,6 @@
 package com.company.holidaybackend.test;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
@@ -25,11 +24,6 @@ public class DurarionTest {
         String text = "age>25,name:John,gender:Male,age:30,occupation:Developer,";
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
         Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String key = matcher.group(1);
-            String op = matcher.group(2);
-            String value = matcher.group(3);
-            System.out.println("Key: " + key + ", Operator: " + op + ", Value: " + value);
-        }
+
     }
 }
