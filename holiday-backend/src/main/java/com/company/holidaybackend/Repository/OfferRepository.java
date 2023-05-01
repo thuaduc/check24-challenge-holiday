@@ -30,7 +30,7 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             "(:mealType IS NULL OR o.mealType = :mealType) AND " +
             "(:roomType IS NULL OR o.roomType = :roomType) AND " +
             "(:oceanView IS NULL OR cast(o.oceanView as string ) = :oceanView) " +
-            "GROUP BY o.hotelId ORDER BY MIN(o.price)"
+            "GROUP BY o.hotelId ORDER BY MIN(o.price) "
     )
     List<HotelList> query_and_return_min_price(@Param("inboundDepartureAirport") String inboundDepartureAirport,
                                                @Param("inboundDepartureDatetime") java.sql.Timestamp inboundDepartureDatetime,
