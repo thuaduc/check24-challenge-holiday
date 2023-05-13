@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.style {
+  font-style: italic;
+  font-weight: bolder;
+  font-size: 50px;
+  line-height: 115px;
+  text-transform: uppercase;
+  letter-spacing: 100px;
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 85px;
+}
+
+.first {
+  margin-top: -40px;
+  display: flex;
+  justify-content: center;
+}
+.second {
+  margin-top: -50px;
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .style {
+    line-height: 70px;
+    letter-spacing: 20px;
+  }
+}
