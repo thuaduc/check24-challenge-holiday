@@ -29,19 +29,13 @@ public class Offer {
 
     private long duration;
 
-    private String inboundDepartureAirport;
-
     private java.sql.Timestamp inboundDepartureDatetime;
-
-    private String inboundArrivalAirport;
 
     private java.sql.Timestamp inboundArrivalDatetime;
 
     private String outboundDepartureAirport;
 
     private java.sql.Timestamp outboundDepartureDatetime;
-
-    private String outboundArrivalAirport;
 
     private java.sql.Timestamp outboundArrivalDatetime;
 
@@ -50,15 +44,16 @@ public class Offer {
     private String roomType;
 
     public Offer(int hotelId, int countAdults, int countChildren, double price,
+                 String outboundDepartureAirport,
                  String inboundDepartureDatetime,
                  String inboundArrivalDatetime,
-                 String outboundDepartureAirport,
                  String outboundDepartureDatetime,
-                 String outboundArrivalAirport, String outboundArrivalDatetime,
+                 String outboundArrivalDatetime,
                  String mealType, boolean oceanView, String roomType) {
 
 
         this.hotelId = hotelId;
+        this.outboundDepartureAirport = outboundDepartureAirport;
         this.outboundDepartureDatetime = timestamp_converter(outboundDepartureDatetime);
         this.inboundDepartureDatetime = timestamp_converter(inboundDepartureDatetime);
         this.countAdults = countAdults;
@@ -66,11 +61,8 @@ public class Offer {
         this.price = price;
         long milliseconds = this.outboundArrivalDatetime.getTime() - this.inboundDepartureDatetime.getTime();
         this.duration = (int) milliseconds / (24 * 60 * 60 * 1000);
-        this.inboundArrivalAirport = "PMI";
-        this.outboundDepartureAirport = "PMI";
         this.inboundArrivalDatetime = timestamp_converter(inboundArrivalDatetime);
         this.outboundArrivalDatetime = timestamp_converter(outboundArrivalDatetime);
-        this.outboundArrivalAirport = outboundArrivalAirport;
         this.mealType = mealType;
         this.oceanView = oceanView;
         this.roomType = roomType;

@@ -12,36 +12,27 @@ import java.util.List;
 
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Integer> {
-    //DATE(cast(:inboundDepartureDatetime as TIMESTAMP)) = DATE(o.inboundDepartureDatetime)
 
-
-    @Query(value = "SELECT NEW HotelList(o.hotelId, COUNT(*), MIN(o.price)) " +
+    @Query(value = "SELECT NEW HotelList(o.hotelId, (SELECT h.name FROM Hotel h WHERE h.id = o.hotelId)," +
+            "(SELECT h.stars FROM Hotel h WHERE h.id = o.hotelId), COUNT(*), MIN(o.price)) " +
             "FROM Offer o " +
             "WHERE " +
-            "(:inboundDepartureAirport IS NULL OR o.inboundDepartureAirport = :inboundDepartureAirport) AND " +
-            "(cast(:inboundDepartureDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:inboundDepartureDatetime as TIMESTAMP)) = DATE(o.inboundDepartureDatetime) ) AND " +
-            "(:outboundArrivalAirport IS NULL OR o.outboundArrivalAirport = :outboundArrivalAirport) AND " +
-            "(cast(:outboundArrivalDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:outboundArrivalDatetime as TIMESTAMP )) = DATE(o.outboundArrivalDatetime)) AND " +
+            "(:outboundDepartureAirport IS NULL OR o.outboundDepartureAirport = :outboundDepartureAirport) AND " +
+            "(cast(:outboundDepartureDatetime as TIMESTAMP ) IS NULL " +
+            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) = DATE(o.outboundDepartureDatetime) ) AND " +
+            "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
+            "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +
             "(:countChildren = 0 OR o.countChildren = :countChildren) AND " +
-            "(:duration = 0 OR o.duration = :duration) AND " +
-            "(:mealType IS NULL OR o.mealType = :mealType) AND " +
-            "(:roomType IS NULL OR o.roomType = :roomType) AND " +
-            "(:oceanView IS NULL OR cast(o.oceanView as string ) = :oceanView) " +
+            "(:duration = 0 OR o.duration = :duration) " +
             "GROUP BY o.hotelId ORDER BY MIN(o.price) "
     )
-    List<HotelList> query_and_return_min_price(@Param("inboundDepartureAirport") String inboundDepartureAirport,
-                                               @Param("inboundDepartureDatetime") java.sql.Timestamp inboundDepartureDatetime,
-                                               @Param("outboundArrivalAirport") String outboundArrivalAirport,
-                                               @Param("outboundArrivalDatetime") java.sql.Timestamp outboundArrivalDatetime,
+    List<HotelList> query_and_return_min_price(@Param("outboundDepartureAirport") String inboundDepartureAirport,
+                                               @Param("outboundDepartureDatetime") java.sql.Timestamp outboundDepartureDatetime,
+                                               @Param("inboundArrivalDatetime") java.sql.Timestamp inboundArrivalDatetime,
                                                @Param("countAdults") int countAdults,
                                                @Param("countChildren") int countChildren,
-                                               @Param("duration") int duration,
-                                               @Param("mealType") String mealType,
-                                               @Param("roomType") String roomType,
-                                               @Param("oceanView") String oceanView
+                                               @Param("duration") int duration
 
     );
 
@@ -49,30 +40,23 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             "FROM Offer o " +
             "WHERE " +
             ":id = o.hotelId AND " +
-            "(:inboundDepartureAirport IS NULL OR o.inboundDepartureAirport = :inboundDepartureAirport) AND " +
-            "(cast(:inboundDepartureDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:inboundDepartureDatetime as TIMESTAMP)) = DATE(o.inboundDepartureDatetime) ) AND " +
-            "(:outboundArrivalAirport IS NULL OR o.outboundArrivalAirport = :outboundArrivalAirport) AND " +
-            "(cast(:outboundArrivalDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:outboundArrivalDatetime as TIMESTAMP )) = DATE(o.outboundArrivalDatetime)) AND " +
+            "(:outboundDepartureAirport IS NULL OR o.outboundDepartureAirport = :outboundDepartureAirport) AND " +
+            "(cast(:outboundDepartureDatetime as TIMESTAMP ) IS NULL " +
+            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) = DATE(o.outboundDepartureDatetime) ) AND " +
+            "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
+            "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +
             "(:countChildren = 0 OR o.countChildren = :countChildren) AND " +
-            "(:duration = 0 OR o.duration = :duration) AND " +
-            "(:mealType IS NULL OR o.mealType = :mealType) AND " +
-            "(:roomType IS NULL OR o.roomType = :roomType) AND " +
-            "(:oceanView IS NULL OR cast(o.oceanView as string ) = :oceanView) "
+            "(:duration = 0 OR o.duration = :duration) " +
+            "GROUP BY o.hotelId ORDER BY MIN(o.price) "
     )
     List<Offer> query_and_return_offers(@Param("id") int id,
-                                        @Param("inboundDepartureAirport") String inboundDepartureAirport,
-                                        @Param("inboundDepartureDatetime") java.sql.Timestamp inboundDepartureDatetime,
-                                        @Param("outboundArrivalAirport") String outboundArrivalAirport,
-                                        @Param("outboundArrivalDatetime") java.sql.Timestamp outboundArrivalDatetime,
+                                        @Param("outboundDepartureAirport") String outboundDepartureAirport,
+                                        @Param("outboundDepartureDatetime") java.sql.Timestamp outboundDepartureDatetime,
+                                        @Param("inboundArrivalDatetime") java.sql.Timestamp inboundArrivalDatetime,
                                         @Param("countAdults") int countAdults,
                                         @Param("countChildren") int countChildren,
-                                        @Param("duration") int duration,
-                                        @Param("mealType") String mealType,
-                                        @Param("roomType") String roomType,
-                                        @Param("oceanView") String oceanView
+                                        @Param("duration") int duration
     );
 
 }

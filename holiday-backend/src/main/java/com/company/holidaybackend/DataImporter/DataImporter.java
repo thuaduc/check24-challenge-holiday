@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -42,12 +41,11 @@ public class DataImporter {
 
     @PostConstruct
     public void importHotels() throws IOException {
-        File hotelsFile = new File(hotelsFilePath);
+        /*File hotelsFile = new File(hotelsFilePath);
         if (hotelsFile.lastModified() == lastModifiedTime_hotels) {
             // File has not been modified since last run, no need to import
             return;
-        }
-
+        }*/
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/hotels.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -70,14 +68,12 @@ public class DataImporter {
 
     @PostConstruct
     public void importOffers() throws IOException {
-        File offersFile = new File(offersFilePath);
+       /* File offersFile = new File(offersFilePath);
         if (offersFile.lastModified() == lastModifiedTime_offers) {
             // File has not been modified since last run, no need to import
             return;
-        }
-
+        }*/
         long startTime = System.nanoTime();
-
         Resource resource = resourceLoader.getResource("classpath:data/offers.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
         Iterable<CSVRecord> records = CSVFormat
@@ -99,38 +95,39 @@ public class DataImporter {
 
             double price = Double.parseDouble(record.get("price"));
 
-            String inboundDepartureAirport = record.get("inbounddepartureairport");
+            String outboundDepartureAirport = record.get("outbounddepartureairport");
+
             OffsetDateTime inboundDepartureDatetime = OffsetDateTime.parse(record.get("inbounddeparturedatetime"), formatter);
 
             OffsetDateTime inboundArrivalDatetime = OffsetDateTime.parse(record.get("inboundarrivaldatetime"), formatter);
 
             OffsetDateTime outboundDepartureDatetime = OffsetDateTime.parse(record.get("outbounddeparturedatetime"), formatter);
 
-            String outboundArrivalAirport = record.get("outboundarrivalairport");
             OffsetDateTime outboundArrivalDatetime = OffsetDateTime.parse(record.get("outboundarrivaldatetime"), formatter);
 
             var duration = Duration.between(outboundDepartureDatetime, inboundArrivalDatetime).toDays();
+
             String mealType = record.get("mealtype");
+
             boolean oceanView = Boolean.parseBoolean(record.get("oceanview"));
+
             String roomType = record.get("roomtype");
 
             batchArgs.add(new Object[]{id, countAdults, countChildren, price, duration,
-                    inboundDepartureAirport, inboundDepartureDatetime,
-                    "FMI", inboundArrivalDatetime,
-                    "FMI", outboundDepartureDatetime,
-                    outboundArrivalAirport, outboundArrivalDatetime,
+                    outboundDepartureAirport,
+                    inboundDepartureDatetime, inboundArrivalDatetime,
+                    outboundDepartureDatetime, outboundArrivalDatetime,
                     mealType, oceanView, roomType});
 
         }
 
         jdbcTemplate.batchUpdate("INSERT INTO offer (" +
-                "hotel_id, count_adults, count_children, price, duration, " +
-                "inbound_departure_airport, inbound_departure_datetime," +
-                "inbound_arrival_airport, inbound_arrival_datetime," +
-                "outbound_departure_airport, outbound_departure_datetime," +
-                "outbound_arrival_airport, outbound_arrival_datetime," +
+                "hotel_id, count_adults, count_children, price, duration," +
+                "outbound_departure_airport," +
+                "inbound_departure_datetime , inbound_arrival_datetime," +
+                "outbound_departure_datetime,outbound_arrival_datetime," +
                 "meal_type, ocean_view, room_type" +
-                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
 
         long endTime = System.nanoTime();
         double durationSeconds = (endTime - startTime) / 1_000_000_000.0;

@@ -16,12 +16,16 @@ public class HotelList {
 
     @Id
     private int id;
+    private String name;
+    private int stars;
     private long count;
     private Double min_price;
 
-    public HotelList(int id, long count, Double min_price) {
+    public HotelList(int id, String name, int stars, long count, Double min_price) {
         this.id = id;
+        this.name = name;
         this.count = count;
+        this.stars = stars;
         this.min_price = min_price;
     }
 }
