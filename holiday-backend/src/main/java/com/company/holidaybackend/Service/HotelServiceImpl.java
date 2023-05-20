@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HotelServiceImpl implements HotelService{
+public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
 
     @Autowired
     public HotelServiceImpl(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
     }
+
     @Override
     public List<Hotel> getAllHotel() {
         return hotelRepository.findAll();
@@ -24,5 +25,10 @@ public class HotelServiceImpl implements HotelService{
     @Override
     public Optional<Hotel> getHotelById(int id) {
         return this.hotelRepository.findById(id);
+    }
+
+    @Override
+    public List<Hotel> getBestHotels() {
+        return hotelRepository.queryBestHotel();
     }
 }

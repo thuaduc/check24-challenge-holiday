@@ -42,7 +42,7 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             ":id = o.hotelId AND " +
             "(:outboundDepartureAirport IS NULL OR o.outboundDepartureAirport = :outboundDepartureAirport) AND " +
             "(cast(:outboundDepartureDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) = DATE(o.outboundDepartureDatetime) ) AND " +
+            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) between DATE(o.outboundDepartureDatetime)-20 AND DATE(o.outboundDepartureDatetime)+2  ) AND " +
             "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
             "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +

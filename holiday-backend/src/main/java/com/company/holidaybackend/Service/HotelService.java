@@ -11,4 +11,6 @@ public interface HotelService {
 
     Optional<Hotel> getHotelById(int id);
 
+    List<Hotel> getBestHotels();
+
 }

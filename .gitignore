@@ -1,2 +1,4 @@
 data/
 default-frontend/
+.idea/
+.vscode/

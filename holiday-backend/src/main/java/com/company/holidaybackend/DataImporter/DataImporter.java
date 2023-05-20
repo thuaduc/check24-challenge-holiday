@@ -68,7 +68,7 @@ public class DataImporter {
 
     @PostConstruct
     public void importOffers() throws IOException {
-       /* File offersFile = new File(offersFilePath);
+        /*File offersFile = new File(offersFilePath);
         if (offersFile.lastModified() == lastModifiedTime_offers) {
             // File has not been modified since last run, no need to import
             return;
@@ -77,7 +77,7 @@ public class DataImporter {
         Resource resource = resourceLoader.getResource("classpath:data/offers.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
         Iterable<CSVRecord> records = CSVFormat
-                .DEFAULT.withDelimiter(';')
+                .DEFAULT.withDelimiter(',')
                 .withFirstRecordAsHeader()
                 .parse(reader);
 
@@ -87,7 +87,7 @@ public class DataImporter {
 
             DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-            int id = Integer.parseInt(record.get("\uFEFFhotelid"));
+            int id = Integer.parseInt(record.get("hotelid"));
 
             int countAdults = Integer.parseInt(record.get("countadults"));
 
