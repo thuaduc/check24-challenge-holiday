@@ -4,21 +4,30 @@
   overflow: hidden;
 }
 .style {
-  font-style: light;
-  font-weight: 600;
-  font-size: 40px;
+  font-style: italic;
+  font-weight: bolder;
+  font-size: 50px;
   line-height: 115px;
-  text-align: center;
   text-transform: uppercase;
-  justify-content: space-around;
-  letter-spacing: 40px;
+  letter-spacing: 100px;
   color: rgba(255, 255, 255, 0.9);
+  padding-left: 85px;
 }
 
 .first {
-  margin-top: -15px;
+  margin-top: -40px;
+  display: flex;
+  justify-content: center;
+}
+.second {
+  margin-top: -50px;
+  display: flex;
+  justify-content: center;
 }
 
-.second {
-  margin-top: 30px;
+@media only screen and (max-width: 600px) {
+  .style {
+    line-height: 70px;
+    letter-spacing: 20px;
+  }
 }

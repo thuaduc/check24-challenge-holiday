@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { ReactNode } from "react";
 
 export const CustonTheme = createTheme({
   palette: {
