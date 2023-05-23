@@ -8,9 +8,7 @@ import java.util.List;
 public interface CartService {
     List<Offer> getAllOffer();
 
-    void addToCart(Cart cart);
+    boolean addToCart(Integer id);
 
-    boolean exist(Integer id);
-
-    void remove(Integer id);
+    boolean remove(Integer id);
 }

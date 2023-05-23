@@ -13,11 +13,14 @@ target/
 .springBeans
 .sts4-cache
 
+src/main/resources/data/offer.csv
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+*.sh
 
 ### NetBeans ###
 /nbproject/private/

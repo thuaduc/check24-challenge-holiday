@@ -24,19 +24,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addToCart(Cart cart) {
-        cartRepository.save(cart);
-    }
-    
-    @Override
-    public boolean exist(Integer id) {
-        return cartRepository.existsById(id);
-    }
-
-    @Override
-    public void remove(Integer id) {
-        cartRepository.deleteById(id);
+    public boolean addToCart(Integer id) {
+        if (cartRepository.getCartIdByOfferId(id) == null) {
+            cartRepository.save(new Cart(id));
+            return true;
+        }
+        return false;
     }
 
+    @Override
+    public boolean remove(Integer id) {
+        if (cartRepository.getCartIdByOfferId(id) != null) {
+            cartRepository.deleteById(cartRepository.getCartIdByOfferId(id));
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -38,6 +38,13 @@ public class OfferServiceImpl implements OfferService {
                                                java.sql.Timestamp outboundDepartureDatetime,
                                                java.sql.Timestamp inboundArrivalDatetime,
                                                int countAdults, int countChildren, int duration) {
+        System.out.println(id);
+        System.out.println(outboundDepartureAirport);
+        System.out.println(outboundDepartureDatetime);
+        System.out.println(inboundArrivalDatetime);
+        System.out.println(countAdults);
+        System.out.println(countChildren);
+        System.out.println(duration);
         return offerRepository.query_and_return_offers(
                 id, outboundDepartureAirport, outboundDepartureDatetime,
                 inboundArrivalDatetime,

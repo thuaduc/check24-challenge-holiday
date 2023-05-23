@@ -2,7 +2,10 @@
 
 # Update
 
-mvn clean package  
+mvn clean install
+mvn spring-boot:run
+java -jar target/*.jar
+
 docker build -t thuaduc24042001/holiday:latest .  
 docker push thuaduc24042001/holiday:latest
 

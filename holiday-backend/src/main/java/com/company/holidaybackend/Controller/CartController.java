@@ -21,22 +21,23 @@ public class CartController {
 
     @PostMapping("/cart/{id}")
     public String addToCard(@PathVariable("id") Integer id) {
-        cartService.addToCart(new Cart(id));
-        return "Offer added to Card";
+        if (cartService.addToCart(id)) {
+            return "Offer added to Card";
+        }
+        return "Offer already exist";
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/cart/all")
     public List<Offer> getAllCard() {
         return cartService.getAllOffer();
     }
 
-    @DeleteMapping("/cart{id}")
+    @DeleteMapping("/cart/delete/{id}")
     public String removeFromCart(@PathVariable("id") Integer id) {
-        if (cartService.exist(id)) {
-            cartService.remove(id);
-            return "Offer added to Cart";
+        if (cartService.remove(id)) {
+            return "Removed successfully";
         }
-        return "Error while adding Offer to Card: Offer id does not exist";
+        return "Removed failed: no offer existed";
     }
 
 }

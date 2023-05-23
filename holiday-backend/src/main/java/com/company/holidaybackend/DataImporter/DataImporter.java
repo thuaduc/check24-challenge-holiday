@@ -1,5 +1,7 @@
 package com.company.holidaybackend.DataImporter;
 
+import com.company.holidaybackend.Repository.HotelRepository;
+import com.company.holidaybackend.Repository.OfferRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,14 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataImporter {
 
     private final ResourceLoader resourceLoader;
     private final JdbcTemplate jdbcTemplate;
+
     private final long lastModifiedTime_hotels = 0L;
     private final long lastModifiedTime_offers = 0L;
 
@@ -41,11 +45,15 @@ public class DataImporter {
 
     @PostConstruct
     public void importHotels() throws IOException {
-        /*File hotelsFile = new File(hotelsFilePath);
-        if (hotelsFile.lastModified() == lastModifiedTime_hotels) {
-            // File has not been modified since last run, no need to import
+
+        String sql = "SELECT COUNT(*) FROM hotel";
+
+        int count = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
+
+        if (count > 0) {
             return;
-        }*/
+        }
+
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/hotels.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -60,6 +68,7 @@ public class DataImporter {
             int stars = Integer.parseInt(String.valueOf(record.get("stars").charAt(0)));
             batchArgs.add(new Object[]{id, name, stars});
         }
+
         jdbcTemplate.batchUpdate("INSERT INTO hotel (id, name, stars) VALUES (?, ?, ?)", batchArgs);
         long endTime = System.nanoTime();
         double durationSeconds = (endTime - startTime) / 1_000_000_000.0;
@@ -68,11 +77,13 @@ public class DataImporter {
 
     @PostConstruct
     public void importOffers() throws IOException {
-        /*File offersFile = new File(offersFilePath);
-        if (offersFile.lastModified() == lastModifiedTime_offers) {
-            // File has not been modified since last run, no need to import
+        String sql = "SELECT COUNT(*) FROM offer";
+
+        int count = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
+
+        if (count > 0) {
             return;
-        }*/
+        }
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/offers.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);

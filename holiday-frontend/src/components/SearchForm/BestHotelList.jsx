@@ -13,10 +13,4 @@ export const best_hotels = [
   { id: 144, name: "Hotel Morlans", stars: 5 },
   { id: 146, name: "FERGUS Style Cala Blanca Suites", stars: 5 },
   { id: 149, name: "FERGUS Style Tobago", stars: 5 },
-  { id: 162, name: "HM Ayron Park", stars: 5 },
-  { id: 173, name: "Universal Grand León & Spa", stars: 5 },
-  { id: 181, name: "MySeaHouse Hotel Flamingo", stars: 5 },
-  { id: 183, name: "Pure Salt Garonda", stars: 5 },
-  { id: 207, name: "Metropolitan Playa Hotel", stars: 5 },
-  { id: 9, name: "Bonsol Hotel Resort & Spa", stars: 5 },
 ];

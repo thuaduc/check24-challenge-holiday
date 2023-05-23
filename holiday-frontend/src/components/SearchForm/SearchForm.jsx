@@ -11,11 +11,11 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@emotion/react";
 import { CustonTheme } from "../Theme";
-import mallorca from "./mallorca4.jpeg";
-import mallorca2 from "./mallorca.png";
+import mallorca from "../../../public/background/mallorca.jpeg";
 import HotelList from "../Hotel/HotelList";
 import { best_hotels } from "./BestHotelList";
 import { departure_airports } from "./DepartureAirportList";
+import dayjs from "dayjs";
 
 const styles = {
   backgroundLandscape: {
@@ -36,14 +36,16 @@ const styles = {
 
 export function SearchForm() {
   const [departureAirport, setDepartureAirport] = useState("MUC");
-  const [departureDate, setDepartureDate] = useState();
-  const [returnDate, setReturnDate] = useState();
-  const [countAdults, setCountAdults] = useState(1);
+  const [departureDate, setDepartureDate] = useState(dayjs());
+  const [returnDate, setReturnDate] = useState(dayjs().add(2, "day"));
+  const [countAdults, setCountAdults] = useState(2);
   const [countChildren, setCountChildren] = useState(0);
   const [duration, setDuration] = useState(0);
   const [hotels, sethotels] = useState([]);
+  const [offers, setoffers] = useState([]);
 
-  const handleSearch = () => {
+  async function handleSearch() {
+    setoffers([]);
     const query =
       "http://localhost:8080/api/v1/list?search=outboundDepartureAirport==" +
       departureAirport +
@@ -63,25 +65,31 @@ export function SearchForm() {
         sethotels(data);
       })
       .catch((e) => console.log(e));
+  }
 
-    // fetch(query)
-    //   .then((re) => )
-    //   .then((data) => {
-    //     console.log(data);
-    //     sethotels(data);
-    //   })
-    //   .catch((error) => console.log(error));
+  async function submitQuerryOffer(hotelId) {
+    const new_query =
+      "http://localhost:8080/api/v1/offer?search=id==" +
+      hotelId +
+      ",outboundDepartureAirport==" +
+      departureAirport +
+      ",outboundDepartureDatetime==" +
+      departureDate.toISOString().replace("Z", "+00:00") +
+      ",inboundArrivalDatetime==" +
+      returnDate.toISOString().replace("Z", "+00:00") +
+      ",countAdults==" +
+      countAdults +
+      ",countChildren==" +
+      countChildren;
 
-    // try {
-    //   const response = await fetch(query);
-    //   console.log(response);
-    //   //   const data = await response.json();
-    //   //   sethotels(data);
-    // } catch (error) {
-    //   console.log(error);
-    //   console.log(hotels);
-    // }
-  };
+    console.log(new_query);
+    fetch(new_query)
+      .then((respone) => respone.json())
+      .then((data) => {
+        setoffers(data);
+      })
+      .catch((error) => console.log(error));
+  }
 
   return (
     <ThemeProvider theme={CustonTheme}>
@@ -169,7 +177,12 @@ export function SearchForm() {
               </Button>
             </Grid>
           </Grid>
-          <HotelList data={hotels} best_hotels={best_hotels} />
+          <HotelList
+            offers={offers}
+            hotel={hotels}
+            best_hotels={best_hotels}
+            callbackFunction={submitQuerryOffer}
+          />
         </Container>
       </Box>
     </ThemeProvider>

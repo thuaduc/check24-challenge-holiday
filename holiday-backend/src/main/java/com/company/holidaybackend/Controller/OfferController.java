@@ -80,7 +80,7 @@ public class OfferController {
     public List<Offer> get_offers(@RequestParam(value = "search") String search) {
         Map<String, String> queryParams = hadle_query(search);
 
-        int id = Integer.parseInt(queryParams.getOrDefault("hotelId", "0"));
+        int id = Integer.parseInt(queryParams.getOrDefault("id", "0"));
 
         String outboundDepartureAirport = queryParams.getOrDefault("outboundDepartureAirport", null);
 

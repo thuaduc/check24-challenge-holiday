@@ -36,19 +36,19 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
 
     );
 
-    @Query("SELECT o " +
+    @Query(value = "SELECT o " +
             "FROM Offer o " +
             "WHERE " +
             ":id = o.hotelId AND " +
             "(:outboundDepartureAirport IS NULL OR o.outboundDepartureAirport = :outboundDepartureAirport) AND " +
             "(cast(:outboundDepartureDatetime as TIMESTAMP ) IS NULL " +
-            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) between DATE(o.outboundDepartureDatetime)-20 AND DATE(o.outboundDepartureDatetime)+2  ) AND " +
+            "OR DATE(cast(:outboundDepartureDatetime as TIMESTAMP)) = DATE(o.outboundDepartureDatetime) ) AND " +
             "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
             "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +
             "(:countChildren = 0 OR o.countChildren = :countChildren) AND " +
             "(:duration = 0 OR o.duration = :duration) " +
-            "GROUP BY o.hotelId ORDER BY MIN(o.price) "
+            "ORDER BY o.price "
     )
     List<Offer> query_and_return_offers(@Param("id") int id,
                                         @Param("outboundDepartureAirport") String outboundDepartureAirport,
