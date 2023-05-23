@@ -3,7 +3,7 @@ import { SearchForm } from "./components/SearchForm/SearchForm";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { NavBar } from "./components/NavBar/NavBar";
-import { UserOrders } from "./components/UserOrder/UserOrders";
+import Cart from "./components/Cart/Cart";
 
 export default function App() {
   return (
@@ -12,7 +12,7 @@ export default function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Routes>
           <Route path="/" element={<SearchForm />} />
-          <Route path="/cart" element={<UserOrders />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </LocalizationProvider>
     </Router>

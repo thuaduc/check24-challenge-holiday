@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    @Query(value = "SELECT o from Offer o WHERE EXISTS (SELECT c FROM Cart c where c.offerId = o.offerId)")
+    @Query(value = "SELECT o FROM Offer o, Cart c WHERE c.offerId = o.offerId")
     List<Offer> getAllCart();
 
-    @Query(value = "SELECT c.id from Cart c where c.offerId = :offerId")
-    Integer getCartIdByOfferId(@Param("offerId") int offerId);
+    @Query(value = "SELECT COALESCE(c.id, 0) from Cart c where c.offerId = :offerId")
+    List<Integer> getCartIdByOfferId(@Param("offerId") int offerId);
 
 }

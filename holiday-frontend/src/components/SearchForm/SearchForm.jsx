@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 
 const styles = {
   backgroundLandscape: {
-    backgroundImage: `url(${mallorca})`,
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${mallorca})`, // Add linear-gradient for color overlay
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: "55vh",
@@ -31,8 +31,12 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: "10px",
     opacity: "0.96",
+    mt: "-50px",
   },
 };
+
+{
+}
 
 export function SearchForm() {
   const [departureAirport, setDepartureAirport] = useState("MUC");
@@ -93,17 +97,18 @@ export function SearchForm() {
 
   return (
     <ThemeProvider theme={CustonTheme}>
-      <Box sx={styles.backgroundLandscape}>
-        {/* <Container>
-          <div className="container">
-            <div className="first">
-              <p className="style">Explorar</p>
+      <Box sx={styles.backgroundLandscape} className="box">
+        <div>
+          <Container>
+            <div className="container">
+              <p className="style-1">Welcome to</p>
+              <p className="style-2">Check24 Holiday</p>
+              <p className="style-3">
+                Book your stay and enjoy the best accommodation in Mallorca
+              </p>
             </div>
-            <div className="second">
-              <p className="style">Mallorca</p>
-            </div>
-          </div>
-        </Container> */}
+          </Container>
+        </div>
       </Box>
       <Box>
         <Container maxWidth="lg" sx={{ ...styles.backgroundWhite, mt: -15 }}>
@@ -173,7 +178,7 @@ export function SearchForm() {
                 size="large"
                 onClick={handleSearch}
               >
-                Search
+                Search Now
               </Button>
             </Grid>
           </Grid>

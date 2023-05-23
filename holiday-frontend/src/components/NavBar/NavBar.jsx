@@ -38,7 +38,7 @@ export function NavBar() {
             <Button href="/about" color="inherit" sx={{ mr: "auto" }}>
               About
             </Button>
-            <IconButton href="/cart" color="inherit">
+            <IconButton href="/cart" color="inherit" sx={{ mr: 1 }}>
               <Badge badgeContent={countCart} color="error">
                 <ShoppingCartIcon />
               </Badge>

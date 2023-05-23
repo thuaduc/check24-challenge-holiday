@@ -25,7 +25,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addToCart(Integer id) {
-        if (cartRepository.getCartIdByOfferId(id) == null) {
+        if (cartRepository.getCartIdByOfferId(id).size() == 0) {
             cartRepository.save(new Cart(id));
             return true;
         }
@@ -34,8 +34,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean remove(Integer id) {
-        if (cartRepository.getCartIdByOfferId(id) != null) {
-            cartRepository.deleteById(cartRepository.getCartIdByOfferId(id));
+        if (cartRepository.getCartIdByOfferId(id).size() > 0) {
+            cartRepository.deleteById(cartRepository.getCartIdByOfferId(id).get(0));
             return true;
         }
         return false;
