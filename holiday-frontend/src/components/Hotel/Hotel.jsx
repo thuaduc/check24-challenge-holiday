@@ -34,10 +34,10 @@ export default function Hotel({ hotel, callbackFunction, callbackQuery }) {
             {hotel.name}
           </Typography>
 
-          <Stack>
-            <Typography variant="body1">Halfboard</Typography>
-            <Typography variant="body1">Apartment</Typography>
-          </Stack>
+          {/* <Stack>
+            <Typography variant="body1">{hotel.mealType}</Typography>
+            <Typography variant="body1">hotel.roomType}</Typography>
+          </Stack> */}
 
           <Button
             variant="contained"

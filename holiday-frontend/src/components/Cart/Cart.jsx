@@ -3,8 +3,9 @@ import { Button, Container, List, Typography, Stack } from "@mui/material";
 import Offer from "../Offer/Offer";
 import { Link } from "react-router-dom";
 
-const getOrders = async (hotelId) => {
-  const query = "http://localhost:8080/api/v1/cart/all";
+const query = "http://localhost:8080/api/v1/cart/all";
+
+const getOrders = async () => {
   try {
     const response = await fetch(query);
     const data = await response.json();

@@ -11,15 +11,15 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@emotion/react";
 import { CustonTheme } from "../Theme";
-import mallorca from "../../../public/background/mallorca.jpeg";
+import mallorca from "../../background/mallorca.jpeg";
 import HotelList from "../Hotel/HotelList";
-import { best_hotels } from "./BestHotelList";
-import { departure_airports } from "./DepartureAirportList";
+import { best_hotels } from "./BestHotelsData";
+import { departure_airports } from "./DepartureAirportsData";
 import dayjs from "dayjs";
 
 const styles = {
   backgroundLandscape: {
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${mallorca})`, // Add linear-gradient for color overlay
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${mallorca})`, // Add linear-gradient for color overlay
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: "55vh",
@@ -34,9 +34,6 @@ const styles = {
     mt: "-50px",
   },
 };
-
-{
-}
 
 export function SearchForm() {
   const [departureAirport, setDepartureAirport] = useState("MUC");

@@ -30,11 +30,12 @@ const getNameAndStars = async (hotelId) => {
 const handleAdd = async (offerId) => {
   const query = "http://localhost:8080/api/v1/cart/" + offerId;
   console.log(query);
-  fetch(query, {
+  await fetch(query, {
     method: "POST",
   }).catch((error) => {
     console.log(error);
   });
+  //window.location.reload();
 };
 
 const handleDelete = async (offerId) => {
@@ -45,6 +46,7 @@ const handleDelete = async (offerId) => {
   }).catch((error) => {
     console.log(error);
   });
+  //window.location.reload();
 };
 
 const getTravelDurationString = (departure, arrival) => {

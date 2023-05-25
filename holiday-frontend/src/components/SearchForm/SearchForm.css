@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -10,7 +15,7 @@
   font-size: 50px;
   line-height: 61px;
   color: #ffffff;
-  margin: 50 0 25 0;
+  margin-top: 50px;
 }
 
 .style-2 {
@@ -20,7 +25,7 @@
   line-height: 120px;
   letter-spacing: 0.07em;
   color: #ffffff;
-  margin: 0 0 0 0;
+  margin-left: -3px;
 }
 
 .style-3 {

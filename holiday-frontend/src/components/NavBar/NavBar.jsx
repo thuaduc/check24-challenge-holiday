@@ -19,7 +19,7 @@ const getNumOfCart = async () => {
 };
 
 export function NavBar() {
-  const [countCart, setCountCart] = useState([]);
+  const [countCart, setCountCart] = useState(0);
 
   useEffect(() => {
     getNumOfCart().then((result) => {
