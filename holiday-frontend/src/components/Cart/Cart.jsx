@@ -3,7 +3,6 @@ import { Button, Container, List, Typography, Stack } from "@mui/material";
 import Offer from "../Offer/Offer";
 import HomeIcon from "@mui/icons-material/Home";
 import { API_CART_GET } from "../../Api";
-import { Link } from "react-router-dom";
 
 const getOrders = async () => {
   try {
@@ -49,7 +48,7 @@ const Cart = () => {
     );
   }
   return (
-    <Container>
+    <Container sx={{ minHeight: 660 }}>
       <List>
         {allorders.map((o) => (
           <li key={o.offerId}>
