@@ -71,7 +71,7 @@ Replace **data.csv** file in **holiday-backend/src/main/resources/data/**
 
 In holiday-backend folder, run:
 
-1. `mvn clean` to install the jar file.
+1. `mvn clean install` to install the jar file.
 
 2. `docker-compose up --build` to build docker container and run backend.
 
