@@ -1,13 +1,20 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { AppBar, Box, Toolbar, Button, IconButton, Badge } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Button,
+  IconButton,
+  Badge,
+  Container,
+} from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { ThemeProvider } from "@emotion/react";
-import { CustonTheme } from "../Theme";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
 
 const getNumOfCart = async () => {
   const query = "http://localhost:8080/api/v1/cart/all";
-
   try {
     const response = await fetch(query);
     const data = await response.json();
@@ -28,24 +35,39 @@ export function NavBar() {
   }, [countCart]);
 
   return (
-    <ThemeProvider theme={CustonTheme}>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" className="" color="primary">
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" className="" color="primary">
+        <Container>
           <Toolbar>
-            <Button href="/" color="inherit">
+            <Button
+              href="/"
+              color="inherit"
+              sx={{ ml: -5 }}
+              startIcon={<HomeIcon />}
+            >
               My Holiday
             </Button>
-            <Button href="/about" color="inherit" sx={{ mr: "auto" }}>
+            <Button
+              href="/about"
+              color="inherit"
+              sx={{ mr: "auto" }}
+              startIcon={<InfoIcon />}
+            >
               About
             </Button>
-            <IconButton href="/cart" color="inherit" sx={{ mr: 1 }}>
-              <Badge badgeContent={countCart} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+            <Badge badgeContent={countCart} color="error">
+              <Button
+                href="/cart"
+                color="inherit"
+                sx={{ mr: -8 }}
+                startIcon={<ShoppingCartIcon />}
+              >
+                Cart
+              </Button>
+            </Badge>
           </Toolbar>
-        </AppBar>
-      </Box>
-    </ThemeProvider>
+        </Container>
+      </AppBar>
+    </Box>
   );
 }

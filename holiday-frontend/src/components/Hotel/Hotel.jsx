@@ -8,9 +8,17 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function Hotel({ hotel, callbackFunction, callbackQuery }) {
+export default function Hotel({ hotel, callback_function, callback_query }) {
   return (
-    <Card variant="outlined" sx={{ display: "flex", mt: 3 }}>
+    <Card
+      variant="outlined"
+      sx={{
+        display: "flex",
+        mt: 3,
+        boxShadow: 5,
+        borderRadius: 3,
+      }}
+    >
       <Box
         sx={{
           backgroundImage: `url("/hotels/${(hotel.id % 40) + 1}.jpg")`,
@@ -30,19 +38,18 @@ export default function Hotel({ hotel, callbackFunction, callbackQuery }) {
         }}
       >
         <Stack direction="column" justifyContent="space-between">
-          <Typography sx={{ mr: 2 }} variant="h6">
+          <Typography sx={{ mr: 2 }} variant="h6" fontWeight="bold">
             {hotel.name}
           </Typography>
-
-          {/* <Stack>
-            <Typography variant="body1">{hotel.mealType}</Typography>
-            <Typography variant="body1">hotel.roomType}</Typography>
-          </Stack> */}
-
           <Button
             variant="contained"
             sx={{ width: "140px", height: "40px" }}
-            onClick={() => callbackFunction(hotel.id, callbackQuery)}
+            onClick={() => {
+              console.log(hotel.id);
+              console.log(callback_query);
+              console.log(callback_function);
+              callback_function(hotel.id, callback_query);
+            }}
           >
             View {hotel.count} {hotel.count > 1 ? "Offers" : "Offer"}
           </Button>

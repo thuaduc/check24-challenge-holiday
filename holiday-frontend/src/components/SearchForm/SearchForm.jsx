@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./SearchForm.css";
 import {
   Box,
   Container,
@@ -7,114 +6,73 @@ import {
   TextField,
   Button,
   MenuItem,
+  Typography,
+  Stack,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { ThemeProvider } from "@emotion/react";
-import { CustonTheme } from "../Theme";
 import mallorca from "../../background/mallorca.jpeg";
-import HotelList from "../Hotel/HotelList";
-import { best_hotels } from "./BestHotelsData";
 import { departure_airports } from "./DepartureAirportsData";
 import dayjs from "dayjs";
 
-const styles = {
-  backgroundLandscape: {
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${mallorca})`, // Add linear-gradient for color overlay
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: "55vh",
-    width: "100%",
-    minHeight: "100%",
-  },
-
-  backgroundWhite: {
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    opacity: "0.96",
-    mt: "-50px",
-  },
+const bg_landscape = {
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${mallorca})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  height: 400,
+};
+const bg_white = {
+  backgroundColor: "secondary.main",
+  borderRadius: "15px",
+  opacity: "0.97",
+  mt: -10,
+  boxShadow: 2,
 };
 
-export function SearchForm() {
+export function SearchForm(search_function, set_parsed_query) {
   const [departureAirport, setDepartureAirport] = useState("MUC");
   const [departureDate, setDepartureDate] = useState(dayjs());
   const [returnDate, setReturnDate] = useState(dayjs().add(2, "day"));
   const [countAdults, setCountAdults] = useState(2);
   const [countChildren, setCountChildren] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [hotels, sethotels] = useState([]);
-  const [offers, setoffers] = useState([]);
-
-  async function handleSearch() {
-    setoffers([]);
-    const query =
-      "http://localhost:8080/api/v1/list?search=outboundDepartureAirport==" +
-      departureAirport +
-      ",outboundDepartureDatetime==" +
-      departureDate.toISOString().replace("Z", "+00:00") +
-      ",inboundArrivalDatetime==" +
-      returnDate.toISOString().replace("Z", "+00:00") +
-      ",countAdults==" +
-      countAdults +
-      ",countChildren==" +
-      countChildren;
-
-    console.log(query);
-    fetch(query)
-      .then((respone) => respone.json())
-      .then((data) => {
-        sethotels(data);
-      })
-      .catch((e) => console.log(e));
-  }
-
-  async function submitQuerryOffer(hotelId) {
-    const new_query =
-      "http://localhost:8080/api/v1/offer?search=id==" +
-      hotelId +
-      ",outboundDepartureAirport==" +
-      departureAirport +
-      ",outboundDepartureDatetime==" +
-      departureDate.toISOString().replace("Z", "+00:00") +
-      ",inboundArrivalDatetime==" +
-      returnDate.toISOString().replace("Z", "+00:00") +
-      ",countAdults==" +
-      countAdults +
-      ",countChildren==" +
-      countChildren;
-
-    console.log(new_query);
-    fetch(new_query)
-      .then((respone) => respone.json())
-      .then((data) => {
-        setoffers(data);
-      })
-      .catch((error) => console.log(error));
-  }
 
   return (
-    <ThemeProvider theme={CustonTheme}>
-      <Box sx={styles.backgroundLandscape} className="box">
-        <div>
-          <Container>
-            <div className="container">
-              <p className="style-1">Welcome to</p>
-              <p className="style-2">Check24 Holiday</p>
-              <p className="style-3">
-                Book your stay and enjoy the best accommodation in Mallorca
-              </p>
-            </div>
-          </Container>
-        </div>
+    <Box sx={{ bgcolor: "secondary.main" }}>
+      <Box sx={bg_landscape}>
+        <Container sx={{ pt: 10 }}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color={"#fff"}
+            sx={{ ml: "5px" }}
+          >
+            Welcome to
+          </Typography>
+          <Typography variant="h1" fontWeight="bold" color={"#fff"}>
+            Check-24 Mallorca
+          </Typography>
+          <Typography
+            variant="h6"
+            fontWeight="semi-bold"
+            color={"#fff"}
+            sx={{ ml: "5px" }}
+          >
+            Book your stay and enjoy the best accommodation in Mallorca
+          </Typography>
+        </Container>
       </Box>
       <Box>
-        <Container maxWidth="lg" sx={{ ...styles.backgroundWhite, mt: -15 }}>
-          <Grid container spacing={2} alignItems="center">
+        <Container maxWidth="lg" sx={bg_white}>
+          <Grid container spacing={2} sx={{ pt: 2 }}>
             <Grid item xs={12} sm={4}>
               <TextField
                 select
                 fullWidth
-                label="Departure Airport"
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Departure Airport"}
+                  </Typography>
+                }
                 value={departureAirport}
                 onChange={(e) => setDepartureAirport(e.target.value)}
               >
@@ -128,24 +86,36 @@ export function SearchForm() {
             <Grid item xs={12} sm={4}>
               <DatePicker
                 sx={{ width: "100%" }}
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Departure Date"}
+                  </Typography>
+                }
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e)}
-                label="Departure Date"
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <DatePicker
                 sx={{ width: "100%" }}
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Return Date"}
+                  </Typography>
+                }
                 value={returnDate}
                 onChange={(e) => setReturnDate(e)}
-                label="Return Date"
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
                 type="number"
-                label="Adults"
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Adults"}
+                  </Typography>
+                }
                 value={countAdults}
                 onChange={(e) => setCountAdults(parseInt(e.target.value))}
               />
@@ -154,7 +124,11 @@ export function SearchForm() {
               <TextField
                 fullWidth
                 type="number"
-                label="Children"
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Children"}
+                  </Typography>
+                }
                 value={countChildren}
                 onChange={(e) => setCountChildren(parseInt(e.target.value))}
               />
@@ -163,30 +137,38 @@ export function SearchForm() {
               <TextField
                 fullWidth
                 type="number"
-                label="Duration (days)"
+                label={
+                  <Typography variant="subtitel2" fontWeight="bold">
+                    {"Durations (days)"}
+                  </Typography>
+                }
                 value={duration}
                 onChange={(e) => setDuration(parseInt(e.target.value))}
               />
             </Grid>
-            <Grid item xs={12} sx={{}}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={handleSearch}
-              >
-                Search Now
-              </Button>
-            </Grid>
           </Grid>
-          <HotelList
-            offers={offers}
-            hotel={hotels}
-            best_hotels={best_hotels}
-            callbackFunction={submitQuerryOffer}
-          />
+          <Stack sx={{ pb: 2, pt: 2, alignItems: "center" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="medium"
+              sx={{ width: 250 }}
+              onClick={() => {
+                search_function.search_function(
+                  departureAirport,
+                  departureDate,
+                  returnDate,
+                  countAdults,
+                  countChildren
+                );
+              }}
+            >
+              Search Now
+            </Button>
+          </Stack>
         </Container>
       </Box>
-    </ThemeProvider>
+      <Box sx={{ height: 50, bgcolor: "secondary.main" }}></Box>
+    </Box>
   );
 }

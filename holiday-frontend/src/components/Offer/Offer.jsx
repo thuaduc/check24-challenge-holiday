@@ -7,6 +7,7 @@ import {
   Typography,
   Stack,
   Box,
+  Rating,
 } from "@mui/material";
 import { Bed, RestaurantMenu, Water, Hotel } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -46,7 +47,7 @@ const handleDelete = async (offerId) => {
   }).catch((error) => {
     console.log(error);
   });
-  //window.location.reload();
+  window.location.reload();
 };
 
 const getTravelDurationString = (departure, arrival) => {
@@ -71,16 +72,18 @@ const Offer = ({ parsed_offer, is_order }) => {
   return (
     <>
       {is_order == false && (
-        <div>
-          <h1>{nameAndStars[0]}</h1>
-          <h4>{nameAndStars[1]} stars</h4>
-          <Stack direction="row">
+        <>
+          <Typography variant="h4" fontWeight="bold">
+            {nameAndStars[0]}
+          </Typography>
+          <Rating sx={{ mb: 5 }} value={parseInt(nameAndStars[1])} readOnly />
+          <Stack direction="row" sx={{ boxShadow: 5 }}>
             <Box
               sx={{
                 backgroundImage: `url("/hotels/${
                   (offer.hotelId % 40) + 1
                 }.jpg")`,
-                width: "355.5px",
+                width: "400px",
                 height: "300px",
                 backgroundSize: "cover",
               }}
@@ -90,7 +93,7 @@ const Offer = ({ parsed_offer, is_order }) => {
                 backgroundImage: `url("/rooms/${
                   (offer.hotelId % 30) + 1
                 }.jpg")`,
-                width: "355.5px",
+                width: "400px",
                 height: "300px",
                 backgroundSize: "cover",
               }}
@@ -100,27 +103,29 @@ const Offer = ({ parsed_offer, is_order }) => {
                 backgroundImage: `url("/rooms/${
                   (offer.hotelId % 29) + 2
                 }.jpg")`,
-                width: "355.5px",
+                width: "400px",
                 height: "300px",
                 backgroundSize: "cover",
               }}
             />
           </Stack>
-          <br />
-          <br />
-          <Typography>
+          <Typography variant="body1" fontWeight="medium" sx={{ mt: 5, mb: 5 }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat. Duis aute irure dolor in
             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
+            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
           </Typography>
-          <br />
-          <br />
-          <br />
-        </div>
+        </>
       )}
       <Card>
         <CardHeader

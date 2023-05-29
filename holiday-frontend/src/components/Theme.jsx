@@ -9,10 +9,11 @@ export const CustonTheme = createTheme({
       contrastText: "#fff", // White text to contrast against the blue background
     },
     secondary: {
-      light: "#ffd280", // A light orange color for secondary elements
-      main: "#ff9f1c", // An orange color for secondary elements
-      dark: "#ff6b00", // A darker orange color for secondary elements
-      contrastText: "#000", // Black text to contrast against the orange background
+      main: "#f8f9fe",
     },
+  },
+
+  typography: {
+    fontFamily: ["Inter", "sans-serif"].join(","),
   },
 });

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button, Container, List, Typography, Stack } from "@mui/material";
 import Offer from "../Offer/Offer";
+import HomeIcon from "@mui/icons-material/Home";
+
 import { Link } from "react-router-dom";
 
 const query = "http://localhost:8080/api/v1/cart/all";
@@ -27,12 +29,22 @@ const Cart = () => {
   if (allorders.length == 0) {
     return (
       <Container>
-        <Stack direction="column">
-          <Typography variant="h4" align="center" mt={10}>
+        <Stack direction="column" sx={{ height: 660 }}>
+          <Typography
+            variant="h3"
+            fontWeight="semi-bold"
+            align="center"
+            mt={10}
+          >
             Add your first Order now!
           </Typography>
-          <Button component={Link} to="/">
-            To Search Page
+          <Button
+            href="/home"
+            color="primary"
+            sx={{ mt: 5 }}
+            startIcon={<HomeIcon />}
+          >
+            My Holiday
           </Button>
         </Stack>
       </Container>
