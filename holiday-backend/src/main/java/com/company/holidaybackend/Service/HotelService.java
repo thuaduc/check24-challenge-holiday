@@ -10,7 +10,4 @@ public interface HotelService {
     List<Hotel> getAllHotel();
 
     Optional<Hotel> getHotelById(int id);
-
-    List<Hotel> getBestHotels();
-
 }

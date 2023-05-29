@@ -1,9 +1,10 @@
 package com.company.holidaybackend.DataImporter;
 
+import com.company.holidaybackend.Service.OfferServiceImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,18 +18,16 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 
 @Component
 public class DataImporter {
 
+    private static final Logger logger = Logger.getLogger(OfferServiceImpl.class.getName());
     private final ResourceLoader resourceLoader;
     private final JdbcTemplate jdbcTemplate;
 
-    @Value("${hotels.file.path}")
-    private String hotelsFilePath;
-
-    @Value("${offers.file.path}")
-    private String offersFilePath;
 
     @Autowired
     public DataImporter(ResourceLoader resourceLoader, JdbcTemplate jdbcTemplate) {
@@ -41,9 +40,7 @@ public class DataImporter {
 
         String sql = "SELECT COUNT(*) FROM hotel";
 
-        int count = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
-
-        if (count > 0) {
+        if (jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class) > 0) {
             return;
         }
 
@@ -66,18 +63,18 @@ public class DataImporter {
         jdbcTemplate.batchUpdate("INSERT INTO hotel (id, name, stars) VALUES (?, ?, ?)", batchArgs);
         long endTime = System.nanoTime();
         double durationSeconds = (endTime - startTime) / 1_000_000_000.0;
-        System.out.println("====> run time insert hotels: " + durationSeconds);
+        logger.info("Run time insert hotels: " + durationSeconds);
     }
 
     @PostConstruct
+    @Cacheable(cacheNames = "offer")
     public void importOffers() throws IOException {
         String sql = "SELECT COUNT(*) FROM offer";
 
-        int count = jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class);
-
-        if (count > 0) {
+        if (jdbcTemplate.queryForObject(sql, new Object[]{}, Integer.class) > 0) {
             return;
         }
+
         long startTime = System.nanoTime();
         Resource resource = resourceLoader.getResource("classpath:data/offers.csv");
         InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -105,25 +102,23 @@ public class DataImporter {
             OffsetDateTime outboundDepartureDatetime = OffsetDateTime.parse(record.get("outbounddeparturedatetime"), formatter);
             OffsetDateTime outboundArrivalDatetime = OffsetDateTime.parse(record.get("outboundarrivaldatetime"), formatter);
 
-            String mealType = record.get("mealtype");
-            boolean oceanView = Boolean.parseBoolean(record.get("oceanview"));
-            String roomType = record.get("roomtype");
+            String mro = record.get("mro");
 
             batchArgs.add(new Object[]{id, countAdults, countChildren, price,
                     outboundDepartureAirport,
                     inboundDepartureDatetime, inboundArrivalDatetime,
                     outboundDepartureDatetime, outboundArrivalDatetime,
-                    mealType, oceanView, roomType});
+                    mro});
 
             if (batchArgs.size() == batchSize) {
-                System.out.println("UPDATE: current imported rows: " + batchSize * counter++);
+                logger.info("UPDATE: num of imported rows: " + batchSize * counter++);
                 jdbcTemplate.batchUpdate("INSERT INTO offer (" +
                         "hotel_id, count_adults, count_children, price," +
                         "outbound_departure_airport," +
                         "inbound_departure_datetime , inbound_arrival_datetime," +
                         "outbound_departure_datetime,outbound_arrival_datetime," +
-                        "meal_type, ocean_view, room_type" +
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
+                        "mro" +
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?)", batchArgs);
                 batchArgs.clear();
             }
         }
@@ -131,14 +126,14 @@ public class DataImporter {
                 "hotel_id, count_adults, count_children, price," +
                 "outbound_departure_airport," +
                 "inbound_departure_datetime , inbound_arrival_datetime," +
-                "outbound_departure_datetime,outbound_arrival_datetime," +
-                "meal_type, ocean_view, room_type" +
-                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", batchArgs);
+                "outbound_departure_datetime, outbound_arrival_datetime," +
+                "mro" +
+                ") VALUES (?,?,?,?,?,?,?,?,?,?)", batchArgs);
 
         // end time, print total runtime
         long endTime = System.nanoTime();
         double durationSeconds = (endTime - startTime) / 1_000_000_000.0;
-        System.out.println("====> run time insert offers: " + durationSeconds);
+        logger.info("Run time insert offers: " + durationSeconds);
     }
 }
 

@@ -45,10 +45,12 @@ export default function Hotel({ hotel, callback_function, callback_query }) {
             variant="contained"
             sx={{ width: "140px", height: "40px" }}
             onClick={() => {
-              console.log(hotel.id);
-              console.log(callback_query);
-              console.log(callback_function);
-              callback_function(hotel.id, callback_query);
+              callback_function(
+                hotel.id,
+                hotel.name,
+                hotel.stars,
+                callback_query
+              );
             }}
           >
             View {hotel.count} {hotel.count > 1 ? "Offers" : "Offer"}

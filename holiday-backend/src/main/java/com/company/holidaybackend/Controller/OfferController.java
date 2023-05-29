@@ -22,7 +22,6 @@ public class OfferController {
 
     @GetMapping("/list")
     public List<HotelList> get_hotel_list_and_min_price(@RequestParam(value = "search") String search) {
-        System.out.println(search);
         return offerService.query_and_return_min_price(search);
 
     }

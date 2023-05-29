@@ -6,7 +6,7 @@ import { Footer } from "./components/NavBar/Footer";
 import Cart from "./components/Cart/Cart";
 import { ThemeProvider } from "@emotion/react";
 import { CustonTheme } from "./components/Theme";
-import { HomePage } from "./HomePage";
+import { HomePage } from "./pages/HomePage";
 
 export default function App() {
   return (

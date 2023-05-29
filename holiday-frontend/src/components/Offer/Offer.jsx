@@ -6,30 +6,14 @@ import {
   Divider,
   Typography,
   Stack,
-  Box,
-  Rating,
 } from "@mui/material";
 import { Bed, RestaurantMenu, Water, Hotel } from "@mui/icons-material";
-import { useEffect, useState } from "react";
 import Flight from "../Flight/Flight";
-
-const getNameAndStars = async (hotelId) => {
-  const query = "http://localhost:8080/api/v1/hotel/" + hotelId;
-
-  try {
-    const response = await fetch(query);
-    const data = await response.json();
-    const name = data.name;
-    const stars = data.stars;
-    return [name, stars];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
+import { API_CART_DELETE, API_CART_POST } from "../../Api";
+import { getMealType, getRoomType, getOceanView } from "../Mro";
 
 const handleAdd = async (offerId) => {
-  const query = "http://localhost:8080/api/v1/cart/" + offerId;
+  const query = API_CART_POST + offerId;
   console.log(query);
   await fetch(query, {
     method: "POST",
@@ -40,7 +24,7 @@ const handleAdd = async (offerId) => {
 };
 
 const handleDelete = async (offerId) => {
-  const query = "http://localhost:8080/api/v1/cart/delete/" + offerId;
+  const query = API_CART_DELETE + offerId;
   console.log(query);
   await fetch(query, {
     method: "DELETE",
@@ -58,75 +42,12 @@ const getTravelDurationString = (departure, arrival) => {
 };
 
 const Offer = ({ parsed_offer, is_order }) => {
-  const [nameAndStars, setNameAndStars] = useState([]);
   const offer = parsed_offer;
   const button = is_order ? "Delete" : "Add to Cart";
   const button_color = is_order ? "error" : "primary";
 
-  useEffect(() => {
-    getNameAndStars(offer.hotelId).then((result) => {
-      setNameAndStars(result);
-    });
-  }, [offer.hotelId]);
-
   return (
     <>
-      {is_order == false && (
-        <>
-          <Typography variant="h4" fontWeight="bold">
-            {nameAndStars[0]}
-          </Typography>
-          <Rating sx={{ mb: 5 }} value={parseInt(nameAndStars[1])} readOnly />
-          <Stack direction="row" sx={{ boxShadow: 5 }}>
-            <Box
-              sx={{
-                backgroundImage: `url("/hotels/${
-                  (offer.hotelId % 40) + 1
-                }.jpg")`,
-                width: "400px",
-                height: "300px",
-                backgroundSize: "cover",
-              }}
-            />
-            <Box
-              sx={{
-                backgroundImage: `url("/rooms/${
-                  (offer.hotelId % 30) + 1
-                }.jpg")`,
-                width: "400px",
-                height: "300px",
-                backgroundSize: "cover",
-              }}
-            />
-            <Box
-              sx={{
-                backgroundImage: `url("/rooms/${
-                  (offer.hotelId % 29) + 2
-                }.jpg")`,
-                width: "400px",
-                height: "300px",
-                backgroundSize: "cover",
-              }}
-            />
-          </Stack>
-          <Typography variant="body1" fontWeight="medium" sx={{ mt: 5, mb: 5 }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in
-            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum.
-          </Typography>
-        </>
-      )}
       <Card>
         <CardHeader
           sx={{ backgroundColor: "#ededed" }}
@@ -161,22 +82,22 @@ const Offer = ({ parsed_offer, is_order }) => {
                   {getTravelDurationString(
                     offer.outboundDepartureDatetime,
                     offer.inboundArrivalDatetime
-                  ) + " Nights"}
+                  ) + " Days"}
                 </Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
                 <RestaurantMenu />
                 <Typography ml={1} variant="body1">
-                  {offer.mealType}
+                  {getMealType(offer.mro)}
                 </Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
                 <Bed />
                 <Typography ml={1} variant="body1">
-                  {offer.roomType}
+                  {getRoomType(offer.mro)}
                 </Typography>
               </Stack>
-              {offer.oceanView && (
+              {getOceanView(offer.mro) && (
                 <Stack direction="row" alignItems="center">
                   <Water />
                   <Typography ml={1} variant="body1">

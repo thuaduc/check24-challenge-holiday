@@ -10,7 +10,4 @@ import java.util.List;
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
 
-    @Query(value = "SELECT h from Hotel h WHERE h.stars >= 5 ORDER BY h.stars DESC LIMIT 20")
-    List<Hotel> queryBestHotel();
-
 }

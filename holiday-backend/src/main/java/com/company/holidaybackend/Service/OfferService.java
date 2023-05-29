@@ -9,7 +9,6 @@ public interface OfferService {
 
     List<HotelList> query_and_return_min_price(String search);
 
-
     List<Offer> query_and_return_offers(String search);
 
 }

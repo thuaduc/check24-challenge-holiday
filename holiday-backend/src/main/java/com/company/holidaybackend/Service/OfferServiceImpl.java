@@ -4,6 +4,7 @@ import com.company.holidaybackend.Model.HotelList;
 import com.company.holidaybackend.Model.Offer;
 import com.company.holidaybackend.Repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,10 +12,12 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class OfferServiceImpl implements OfferService {
 
+    private static final Logger logger = Logger.getLogger(OfferServiceImpl.class.getName());
     private final OfferRepository offerRepository;
 
     @Autowired
@@ -36,16 +39,16 @@ public class OfferServiceImpl implements OfferService {
         if (timestamp == null) {
             return null;
         }
-        System.out.println(timestamp);
         String new_time = timestamp.replace(" ", "+");
-        System.out.println(new_time);
         LocalDateTime localDateTime = LocalDateTime.parse(new_time, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneOffset.UTC);
         return java.sql.Timestamp.from(zonedDateTime.toInstant());
     }
 
+    @Override
+    @Cacheable("list")
     public List<HotelList> query_and_return_min_price(String search) {
-
+        logger.info("Get Hotel List: " + search);
         Map<String, String> queryParams = handle_query(search);
 
         String outboundDepartureAirport =
@@ -70,6 +73,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @Cacheable("offer")
     public List<Offer> query_and_return_offers(String search) {
 
         Map<String, String> queryParams = handle_query(search);

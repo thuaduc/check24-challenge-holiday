@@ -26,9 +26,4 @@ public class HotelServiceImpl implements HotelService {
     public Optional<Hotel> getHotelById(int id) {
         return this.hotelRepository.findById(id);
     }
-
-    @Override
-    public List<Hotel> getBestHotels() {
-        return hotelRepository.queryBestHotel();
-    }
 }

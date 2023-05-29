@@ -1,17 +1,29 @@
-import { SearchForm } from "./components/SearchForm/SearchForm";
-import { BestHotels } from "./components/BestHotel/BestHotels";
-import { Features } from "./components/Features/Features";
-import { useState } from "react";
-import Hotel from "./components/Hotel/Hotel";
-import Offer from "./components/Offer/Offer";
-import { Box, Button, Container, List, Typography, Stack } from "@mui/material";
+import { SearchForm } from "../components/SearchForm/SearchForm";
+import { BestHotels } from "../components/BestHotel/BestHotels";
+import { Features } from "../components/Features/Features";
+import { useState, useEffect } from "react";
+import Hotel from "../components/Hotel/Hotel";
+import Offer from "../components/Offer/Offer";
+import {
+  Box,
+  Button,
+  Container,
+  List,
+  Typography,
+  Stack,
+  Rating,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import { API_LIST, API_OFFER, API_HOTEL_GET } from "../Api";
+import { useSearchParams } from "react-router-dom";
 
 export const HomePage = () => {
   const [hotels, sethotels] = useState([]);
   const [offers, setoffers] = useState([]);
   const [status, setStatus] = useState("home");
   const [parsedQuery, setParsedQuery] = useState();
+  const [offerId, setOfferId] = useState();
+  const [nameAndStars, setNameAndStars] = useState();
 
   const handleSearch = async (
     departureAirport,
@@ -20,7 +32,7 @@ export const HomePage = () => {
     countAdults,
     countChildren
   ) => {
-    const parsed_query = Promise.resolve({
+    Promise.resolve({
       departureAirport: departureAirport,
       departureDate: departureDate.toISOString(),
       returnDate: returnDate.toISOString(),
@@ -29,15 +41,16 @@ export const HomePage = () => {
     }).then((data) => setParsedQuery(data));
 
     const query =
-      "http://localhost:8080/api/v1/list?search=outboundDepartureAirport==" +
+      API_LIST +
+      "outboundDepartureAirport=" +
       departureAirport +
-      ",outboundDepartureDatetime==" +
+      ",outboundDepartureDatetime=" +
       departureDate.toISOString().replace("Z", "+00:00") +
-      ",inboundArrivalDatetime==" +
+      ",inboundArrivalDatetime=" +
       returnDate.toISOString().replace("Z", "+00:00") +
-      ",countAdults==" +
+      ",countAdults=" +
       countAdults +
-      ",countChildren==" +
+      ",countChildren=" +
       countChildren;
 
     console.log(query);
@@ -55,19 +68,26 @@ export const HomePage = () => {
       .catch((error) => console.log(error));
   };
 
-  const submitQuerryOffer = async (hotelId, parsedQuery) => {
+  const submitQuerryOffer = async (
+    hotelId,
+    hotelName,
+    hotelStars,
+    parsedQuery
+  ) => {
+    setNameAndStars([hotelName, hotelStars]);
     const query =
-      "http://localhost:8080/api/v1/offer?search=id==" +
+      API_OFFER +
+      "id=" +
       hotelId +
-      ",outboundDepartureAirport==" +
+      ",outboundDepartureAirport=" +
       parsedQuery.departureAirport +
-      ",outboundDepartureDatetime==" +
+      ",outboundDepartureDatetime=" +
       parsedQuery.departureDate.replace("Z", "+00:00") +
-      ",inboundArrivalDatetime==" +
+      ",inboundArrivalDatetime=" +
       parsedQuery.returnDate.replace("Z", "+00:00") +
-      ",countAdults==" +
+      ",countAdults=" +
       parsedQuery.countAdults +
-      ",countChildren==" +
+      ",countChildren=" +
       parsedQuery.countChildren;
 
     console.log(query);
@@ -75,9 +95,12 @@ export const HomePage = () => {
       .then((respone) => respone.json())
       .then((data) => {
         setoffers(data);
+        setOfferId(data[0].hotelId);
+      })
+      .then(() => {
+        setStatus("offer");
       })
       .catch((error) => console.log(error));
-    setStatus("offer");
   };
 
   const saveQuery = async (parsed_query) => {
@@ -97,6 +120,7 @@ export const HomePage = () => {
           <Features />
         </>
       );
+
     case "no-hotel":
       return (
         <Container>
@@ -120,6 +144,7 @@ export const HomePage = () => {
           </Stack>
         </Container>
       );
+
     case "hotel":
       return (
         <>
@@ -146,7 +171,7 @@ export const HomePage = () => {
       );
 
     case "offer":
-      console.log(offers);
+      console.log(nameAndStars);
       return (
         <>
           <SearchForm
@@ -157,13 +182,66 @@ export const HomePage = () => {
             <Container>
               <Button
                 sx={{ mt: 5, mb: 5, color: "primary" }}
-                onclick={() => {
+                onClick={() => {
                   setStatus("hotel");
-                  window.location.reload();
                 }}
               >
                 Back to Hotel List
               </Button>
+              <Typography variant="h4" fontWeight="bold">
+                {nameAndStars[0]}
+              </Typography>
+              <Rating
+                sx={{ mb: 5 }}
+                value={parseInt(nameAndStars[1])}
+                readOnly
+              />
+              <Stack direction="row" sx={{ boxShadow: 5 }}>
+                <Box
+                  sx={{
+                    backgroundImage: `url("/hotels/${(offerId % 40) + 1}.jpg")`,
+                    width: "400px",
+                    height: "300px",
+                    backgroundSize: "cover",
+                  }}
+                />
+                <Box
+                  sx={{
+                    backgroundImage: `url("/rooms/${(offerId % 30) + 1}.jpg")`,
+                    width: "400px",
+                    height: "300px",
+                    backgroundSize: "cover",
+                  }}
+                />
+                <Box
+                  sx={{
+                    backgroundImage: `url("/rooms/${(offerId % 29) + 2}.jpg")`,
+                    width: "400px",
+                    height: "300px",
+                    backgroundSize: "cover",
+                  }}
+                />
+              </Stack>
+              <Typography
+                variant="body1"
+                fontWeight="medium"
+                sx={{ mt: 5, mb: 5 }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </Typography>
               <List>
                 {offers.map((o) => (
                   <li key={o.id}>

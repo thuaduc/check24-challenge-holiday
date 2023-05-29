@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { Button, Container, List, Typography, Stack } from "@mui/material";
 import Offer from "../Offer/Offer";
 import HomeIcon from "@mui/icons-material/Home";
-
+import { API_CART_GET } from "../../Api";
 import { Link } from "react-router-dom";
-
-const query = "http://localhost:8080/api/v1/cart/all";
 
 const getOrders = async () => {
   try {
-    const response = await fetch(query);
+    const response = await fetch(API_CART_GET);
     const data = await response.json();
     return data;
   } catch (error) {

@@ -37,9 +37,7 @@ public class Offer {
 
     private java.sql.Timestamp outboundArrivalDatetime;
 
-    private String mealType;
-    private boolean oceanView;
-    private String roomType;
+    private String mro;
 
     public Offer(int hotelId, int countAdults, int countChildren, double price,
                  String outboundDepartureAirport,
@@ -47,7 +45,7 @@ public class Offer {
                  String inboundArrivalDatetime,
                  String outboundDepartureDatetime,
                  String outboundArrivalDatetime,
-                 String mealType, boolean oceanView, String roomType) {
+                 String mro) {
 
 
         this.hotelId = hotelId;
@@ -59,9 +57,7 @@ public class Offer {
         this.price = price;
         this.inboundArrivalDatetime = timestamp_converter(inboundArrivalDatetime);
         this.outboundArrivalDatetime = timestamp_converter(outboundArrivalDatetime);
-        this.mealType = mealType;
-        this.oceanView = oceanView;
-        this.roomType = roomType;
+        this.mro = mro;
     }
 
     private java.sql.Timestamp timestamp_converter(String timestamp) {

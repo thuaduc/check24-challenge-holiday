@@ -1,20 +1,13 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  Button,
-  IconButton,
-  Badge,
-  Container,
-} from "@mui/material";
+import { AppBar, Box, Toolbar, Button, Badge, Container } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
+import { API_CART_GET } from "../../Api";
 
 const getNumOfCart = async () => {
-  const query = "http://localhost:8080/api/v1/cart/all";
+  const query = API_CART_GET;
   try {
     const response = await fetch(query);
     const data = await response.json();

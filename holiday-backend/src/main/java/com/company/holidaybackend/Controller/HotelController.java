@@ -35,9 +35,4 @@ public class HotelController {
         return hotelService.getHotelById(id);
     }
 
-    @GetMapping("hotel/best")
-    public List<Hotel> getBestHotels() {
-        return hotelService.getBestHotels();
-    }
-
 }
