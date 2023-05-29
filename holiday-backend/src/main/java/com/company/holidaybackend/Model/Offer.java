@@ -27,8 +27,6 @@ public class Offer {
     private int countChildren;
     private double price;
 
-    private long duration;
-
     private java.sql.Timestamp inboundDepartureDatetime;
 
     private java.sql.Timestamp inboundArrivalDatetime;
@@ -59,8 +57,6 @@ public class Offer {
         this.countAdults = countAdults;
         this.countChildren = countChildren;
         this.price = price;
-        long milliseconds = this.outboundArrivalDatetime.getTime() - this.inboundDepartureDatetime.getTime();
-        this.duration = (int) milliseconds / (24 * 60 * 60 * 1000);
         this.inboundArrivalDatetime = timestamp_converter(inboundArrivalDatetime);
         this.outboundArrivalDatetime = timestamp_converter(outboundArrivalDatetime);
         this.mealType = mealType;

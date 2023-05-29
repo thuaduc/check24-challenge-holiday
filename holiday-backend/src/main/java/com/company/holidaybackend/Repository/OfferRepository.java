@@ -23,17 +23,14 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
             "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +
-            "(:countChildren = 0 OR o.countChildren = :countChildren) AND " +
-            "(:duration = 0 OR o.duration = :duration) " +
+            "(:countChildren = 0 OR o.countChildren = :countChildren) " +
             "GROUP BY o.hotelId ORDER BY MIN(o.price) "
     )
     List<HotelList> query_and_return_min_price(@Param("outboundDepartureAirport") String inboundDepartureAirport,
                                                @Param("outboundDepartureDatetime") java.sql.Timestamp outboundDepartureDatetime,
                                                @Param("inboundArrivalDatetime") java.sql.Timestamp inboundArrivalDatetime,
                                                @Param("countAdults") int countAdults,
-                                               @Param("countChildren") int countChildren,
-                                               @Param("duration") int duration
-
+                                               @Param("countChildren") int countChildren
     );
 
     @Query(value = "SELECT o " +
@@ -46,8 +43,7 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
             "(cast(:inboundArrivalDatetime as TIMESTAMP ) IS NULL " +
             "OR DATE(cast(:inboundArrivalDatetime as TIMESTAMP )) = DATE(o.inboundArrivalDatetime)) AND " +
             "(:countAdults = 0 OR o.countAdults = :countAdults) AND " +
-            "(:countChildren = 0 OR o.countChildren = :countChildren) AND " +
-            "(:duration = 0 OR o.duration = :duration) " +
+            "(:countChildren = 0 OR o.countChildren = :countChildren) " +
             "ORDER BY o.price "
     )
     List<Offer> query_and_return_offers(@Param("id") int id,
@@ -55,8 +51,7 @@ public interface OfferRepository extends JpaRepository<Offer, Integer> {
                                         @Param("outboundDepartureDatetime") java.sql.Timestamp outboundDepartureDatetime,
                                         @Param("inboundArrivalDatetime") java.sql.Timestamp inboundArrivalDatetime,
                                         @Param("countAdults") int countAdults,
-                                        @Param("countChildren") int countChildren,
-                                        @Param("duration") int duration
+                                        @Param("countChildren") int countChildren
     );
 
 }
