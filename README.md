@@ -8,45 +8,56 @@
   - [Disclaimer](#disclaimer)
   - [Features](#features)
   - [Requirements](#requirements)
-  - [Installation](#installation)
   - [Usage](#usage)
   - [License](#license)
 
 ## How to start
 
-docker build -t thuaduc24042001/holiday .  
-docker run -d
+I have cleaned and adapted the given data to optimize the performance of my code. The actuall data.csv file in holiday-backend/src/main/recources/ contains only 100000 rows.
+
+Use this jupyter-notebook script to clean your data.
+
+Alternatively you can download the cleaned version here.
+
+Replace data.csv file in holiday-backend/src/main/recources/data
+
+In backend folder, run: docker-compose up --build
+
+In frontend folder, run:
+
+- npm i to install all packages
+- npm run dev so start the project
+- click on the link on console
+
+If you want to make a change in backend, run the following commands in backend folder:
+
+- mvn clean install to rebuild jar file
+- docker-compose up --build
 
 ## Disclaimer
 
-Our web app is designed to [insert brief overview of app here].
+This project is my personal project for check24 coding challange. Copy right of the data (hotels.csv and offers.csv) belongs to Check24. More detail could be found here. {link}
 
 ## Features
 
-Our app includes the following features:
+My web application includes the following features:
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- ...
+- User can search for list of all hotels that match the search query.
+- User can view all offers from the chosen hotel.
+- User can see the weather in Mallorca.
 
 ## Requirements
 
 To use our app, you'll need the following:
 
-- [Requirement 1]
-- [Requirement 2]
-- [Requirement 3]
-- ...
+For backend:
 
-## Installation
+- Docker to run the container
+- Java 20
 
-To install our app, follow these steps:
+For fontend:
 
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-4. ...
+- Node js
 
 ## Usage
 
