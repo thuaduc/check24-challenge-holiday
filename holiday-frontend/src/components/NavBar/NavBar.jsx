@@ -35,18 +35,10 @@ export function NavBar() {
             <Button
               href="/"
               color="inherit"
-              sx={{ ml: -5 }}
+              sx={{ ml: -5, mr: "auto" }}
               startIcon={<HomeIcon />}
             >
               My Holiday
-            </Button>
-            <Button
-              href="/about"
-              color="inherit"
-              sx={{ mr: "auto" }}
-              startIcon={<InfoIcon />}
-            >
-              About
             </Button>
             <Badge badgeContent={countCart} color="error">
               <Button
