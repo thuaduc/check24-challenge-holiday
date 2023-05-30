@@ -5,7 +5,6 @@ import com.company.holidaybackend.Service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -18,16 +17,6 @@ public class HotelController {
     @Autowired
     public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
-    }
-
-    @GetMapping("/hotel")
-    public String getHotel() {
-        List<Hotel> hotels = hotelService.getAllHotel();
-        StringBuilder result = new StringBuilder();
-        for (Hotel hotel : hotels) {
-            result.append(hotel.toString()).append("\n");
-        }
-        return result.toString();
     }
 
     @GetMapping("/hotel/{id}")
