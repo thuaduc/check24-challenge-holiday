@@ -8,9 +8,9 @@
 - [Getting started](#getting-started)
   - [Demo](#demo)
   - [Prerequisites](#prerequisites)
+    - [For Data-cleaning (optional)](#for-data-cleaning-optional)
     - [For Backend:](#for-backend)
     - [For Frontend:](#for-frontend)
-    - [For Data-cleaning](#for-data-cleaning)
   - [How to start](#how-to-start)
     - [1. Clean data](#1-clean-data)
     - [2. Start Backend](#2-start-backend)
@@ -23,7 +23,7 @@
 
 ## Disclaimer
 
-This repository is my personal project for Check24 coding challenge. Copy right of the data (hotels.csv and offers.csv) belongs to Check24. More details could be found [here](https://github.com/check24-scholarships/holiday-challenge).
+This repository is my project for the Check24 coding challenge. Copy right of the data (hotels.csv and offers.csv) belongs to Check24. More details could be found [here](https://github.com/check24-scholarships/holiday-challenge).
 
 # Getting started
 
@@ -40,20 +40,21 @@ This repository is my personal project for Check24 coding challenge. Copy right 
 
 To run my app, you'll need the following:
 
+#### For Data-cleaning (optional)
+
+- Python3/Jupter-Notebook
+- Pandas
+
 #### For Backend:
 
 - Docker
-- Java 20
+- Java 17
 - Maven
+  **Note that the java version when you run `mvn -v` should also be 17 or later version**
 
 #### For Frontend:
 
 - Node js
-
-#### For Data-cleaning
-
-- Python3/Jupter-Notebook
-- Pandas
 
 ## How to start
 
@@ -97,23 +98,18 @@ The original offer dataset looks like so:
 | 656     | 2022-09-13T15:50:00+02:00 | 2022-09-21T07:50:00+02:00 | 2           | 0             | 2093  | PMI                     | FRA                   | 2022-09-21T10:10:00+02:00 | FRA                      | PMI                    | 2022-09-13T17:55:00+02:00 | breakfast | FALSE     | double      |
 | 1880    | 2022-08-07T18:00:00+02:00 | 2022-08-12T08:20:00+02:00 | 2           | 0             | 1707  | PMI                     | MUC                   | 2022-08-12T10:35:00+02:00 | MUC                      | PMI                    | 2022-08-07T20:15:00+02:00 | none      | FALSE     | double      |
 | 1190    | 2022-09-20T17:35:00+02:00 | 2022-09-26T07:20:00+02:00 | 2           | 0             | 1866  | PMI                     | SCN                   | 2022-09-26T09:30:00+02:00 | SCN                      | PMI                    | 2022-09-20T19:40:00+02:00 | breakfast | FALSE     | juniorsuite |
-| 231     | 2023-06-07T06:25:00+02:00 | 2023-06-13T09:20:00+02:00 | 1           | 0             | 2131  | PMI                     | STR                   | 2023-06-13T11:25:00+02:00 | STR                      | PMI                    | 2023-06-07T08:30:00+02:00 | breakfast | FALSE     | single      |
-| 757     | 2022-08-23T05:55:00+02:00 | 2022-08-30T07:50:00+02:00 | 2           | 0             | 1153  | PMI                     | HAM                   | 2022-08-30T10:35:00+02:00 | HAM                      | PMI                    | 2022-08-23T08:40:00+02:00 | none      | FALSE     | apartment   |
-| 86      | 2022-08-29T15:10:00+02:00 | 2022-09-02T18:10:00+02:00 | 3           | 0             | 1653  | PMI                     | FDH                   | 2022-09-02T20:20:00+02:00 | FDH                      | PMI                    | 2022-08-29T17:10:00+02:00 | breakfast | FALSE     | triple      |
-| 223     | 2022-08-26T17:50:00+02:00 | 2022-08-30T10:00:00+02:00 | 2           | 0             | 980   | PMI                     | STR                   | 2022-08-30T12:10:00+02:00 | STR                      | PMI                    | 2022-08-26T19:50:00+02:00 | breakfast | FALSE     | double      |
-| 187     | 2022-08-26T17:50:00+02:00 | 2022-08-30T10:00:00+02:00 | 2           | 0             | 1175  | PMI                     | STR                   | 2022-08-30T12:10:00+02:00 | STR                      | PMI                    | 2022-08-26T19:50:00+02:00 | halfboard | FALSE     | double      |
 
-Since I notice that all the flights are oneway flights to Mallorca (PMI), I found 3 these 3 columns redundant:
+Since all the flights are one-way to Mallorca (PMI), I found the following three columns redundant and removed them:
+
 **1. inbounddepartureairport**
 **2. outboundarrivalairport**
 **3. inboundarrivalairport**
 
-Furthermore, the 3 columns
+Additionally, I merged the following three columns into a single column to reduce file size and improve performance:
+
 **1. mealtype**
 **2. roomtype**
 **3. oceanview**
-
-could be merged into one column to save file size and also increase overall performance. So I merged those columns:
 
 | mealtype             | decoded-value | roomtype             | decoded-value | oceanview | decoded-value |
 | -------------------- | ------------- | -------------------- | ------------- | --------- | ------------- |
@@ -136,28 +132,28 @@ could be merged into one column to save file size and also increase overall perf
 |                      |               | TWINROOM             | R             |           |               |
 |                      |               | VILLA                | S             |           |               |
 
-into 1 column called **mtr**
+The column called **mtr**, which now contains the decoded value that was previously stored across the three columns: **mealtype**, **roomtype**, and **oceanview**. By consolidating this information into a single column, we have reduced the file size and improved overall performance.
 
 | mtr | example                                 |
 | --- | --------------------------------------- |
 | AAT | ACCORDINGDESCRIPTION + APARTMENT + TRUE |
 | ... | ...                                     |
 
-The total size of the csv file was reduced from approximately 20GB to 14GB, while all the information remained.
+By merging redundant columns and optimizing the data structure, the size of the CSV file has been significantly reduced. The file size has been reduced from around 20GB to 14GB, while preserving all the necessary information. This reduction in file size helps to save storage space and potentially improves the performance of data operations.
 
 ### Backend
 
-I used Springboot and Model-View-Controller to build an API service with HTTPs methods like get, post, delete method. The Frontend client will interact with Controller part, while Service part holds all the logic of the backend and the Repository part interact directly with a database.
+I used Spring Boot and the Model-View-Controller (MVC) architectural pattern to build an API service that supports HTTP methods such as GET, POST, and DELETE. The frontend client interacts with the Controller, which handles the user requests and responses. The Service layer contains all the business logic of the backend application, while the Repository layer interacts directly with the database to perform data operations.
 
 ### Frontend
 
-Inspired by the default frontend, I implemented a ReactJs App. With MUI I was able to create a modern, responsive UI. I reused some components and functions from the given code, and improved them with attributes like BorderRadius, BoxShadow, ...
+Inspired by the default frontend, I developed a ReactJS application. By utilizing Material-UI (MUI), I was able to create a modern and responsive user interface (UI). I took advantage of the existing codebase and reused certain components and functions. Additionally, I enhanced these components by incorporating attributes such as BorderRadius and BoxShadow, which improved the visual appeal and added visual effects to elements within the UI.
 
 ## Features
 
-My web application includes the following features:
+My web application has the following features:
 
-- Users can search for a list of all hotels that match the search query.
-- Users can view all offers from the chosen hotel.
-- Users can add offers to Card
-- Users can view all added offers in Cart, and also removes them
+- Users can search for hotels that match their query.
+- Users can see the offers available at a - chosen hotel.
+- Users can add offers to their cart.
+- Users can view and remove offers from their cart.
